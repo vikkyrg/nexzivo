@@ -142,11 +142,11 @@ export function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-4 xl:gap-8 items-center">
           {/* Left Column: Headline, Copy, CTAs, Capabilities */}
           <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-start gap-5 sm:gap-6 order-1 pr-0 lg:pr-2">
-            {/* Studio Eyebrow Badge */}
+            {/* Studio Eyebrow */}
             <motion.div {...fadeUp(0.04, 12, 0.45)}>
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#E3E8F0] shadow-xs text-[11.5px] font-bold uppercase tracking-[0.2em] text-[#2764F5]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#2764F5]" />
-                {heroContent.eyebrow}
+              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#2764F5]">
+                <span className="h-0.5 w-5 rounded-full bg-[#2764F5]" aria-hidden="true" />
+                <span>{heroContent.eyebrow}</span>
               </span>
             </motion.div>
 

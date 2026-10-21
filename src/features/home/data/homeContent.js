@@ -8,6 +8,7 @@ import {
   PencilRuler,
   Layers,
   CheckCircle,
+  GraduationCap,
 } from 'lucide-react';
 
 /* ──────────────────────────────────────────────────────────
@@ -253,6 +254,33 @@ export const servicesData = [
     ],
   },
   {
+    slug: 'custom-software-development',
+    number: '05',
+    icon: Cpu,
+    title: 'Custom Software Development',
+    category: 'Business & Management Systems',
+    shortDescription:
+      'Tailored business software to streamline operations and improve efficiency.',
+    heroDescription:
+      'We create tailored software and web-based applications for specific workflows, starting with the challenges, data structures, and users the solution should address.',
+    capabilities: [
+      'Admin dashboards',
+      'Billing and invoicing software',
+      'SaaS applications',
+      'Business process automation',
+    ],
+    deliverables: [
+      'Requirements analysis and workflow architecture',
+      'Custom web software built with modern frameworks',
+      'Testing across key use cases and browsers',
+      'Handover documentation and code repository',
+    ],
+    outcomes: [
+      { metric: 'Tailored', label: 'Built around your exact workflows' },
+      { metric: 'Efficient', label: 'Streamlining daily operations' },
+    ],
+  },
+  {
     slug: 'brand-strategy-innovation',
     number: '05',
     icon: Cpu,
@@ -278,6 +306,33 @@ export const servicesData = [
     outcomes: [
       { metric: 'Tailored', label: 'Built around your exact workflows' },
       { metric: 'Efficient', label: 'Streamlining daily operations' },
+    ],
+  },
+  {
+    slug: 'final-year-projects',
+    number: '06',
+    icon: GraduationCap,
+    title: 'Final Year Project Support',
+    category: 'Academic & Mentorship',
+    shortDescription:
+      'Practical project development support for academic final-year projects.',
+    heroDescription:
+      'We guide students and researchers through turning academic project ideas into functioning, real-world applications with structured architecture and clear documentation.',
+    capabilities: [
+      'Project idea guidance',
+      'Development and implementation',
+      'Documentation support',
+      'Demo and viva preparation',
+    ],
+    deliverables: [
+      'System design diagrams and data flow maps',
+      'Full working source code and environment setup',
+      'Project report and technical documentation',
+      'Viva demo preparation and guidance',
+    ],
+    outcomes: [
+      { metric: 'Practical', label: 'Real working solutions' },
+      { metric: 'Guided', label: 'Step-by-step mentorship' },
     ],
   },
 ];
@@ -477,40 +532,44 @@ export const aboutStudioContent = {
 
 export const processContent = {
   eyebrow: 'Our Process',
-  heading: 'A disciplined four-step approach to every engagement.',
+  heading: "Here's how we bring your ideas to life.",
   description:
-    'From the initial spark to final delivery, we follow a transparent and collaborative workflow that keeps projects on schedule and aligned with your goals.',
+    'A clear, collaborative process that takes your project from the first conversation to the final delivery.',
   steps: [
     {
       number: '01',
-      title: 'Discover',
-      tagline: 'Understand goals & scope',
+      step: 'Step 01',
+      phase: 'Discover',
+      title: 'Understanding your vision',
       description:
-        'We start by listening: understanding your goals, intended audience, technical requirements, and aesthetic direction before committing to a plan.',
+        'We start by understanding your goals, audience, requirements, and the ideas behind your project.',
       icon: Search,
     },
     {
       number: '02',
-      title: 'Design',
-      tagline: 'Visual direction & UX',
+      step: 'Step 02',
+      phase: 'Design',
+      title: 'Exploring ideas and direction',
       description:
-        'We develop the visual direction, wireframes, typography pairings, and user experience, collaborating closely on prototypes and screen reviews.',
+        'We develop creative concepts, layouts, visual direction, and user experiences that fit your brand.',
       icon: PencilRuler,
     },
     {
       number: '03',
-      title: 'Build',
-      tagline: 'Engineering & creation',
+      step: 'Step 03',
+      phase: 'Build',
+      title: 'Creating the solution',
       description:
-        'We create the website, mobile app, poster artwork, or custom software with rigorous attention to detail, responsiveness, clean code, and accessibility.',
+        'We turn approved designs into responsive websites, digital experiences, and creative solutions.',
       icon: Layers,
     },
     {
       number: '04',
-      title: 'Deliver',
-      tagline: 'Testing & handover',
+      step: 'Step 04',
+      phase: 'Deliver',
+      title: 'Refining and delivering',
       description:
-        'We test key user journeys across devices, refine details based on feedback, and provide a comprehensive handover with full asset ownership.',
+        'We test, refine, and polish the final result, ensuring it is ready for a smooth launch.',
       icon: CheckCircle,
     },
   ],

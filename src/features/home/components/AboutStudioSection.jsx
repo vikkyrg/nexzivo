@@ -1,4 +1,5 @@
-import { motion } from 'motion/react';
+import { useRef, useState, useEffect } from 'react';
+import { motion, useInView } from 'motion/react';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { aboutStudioContent } from '../data/homeContent';
@@ -9,9 +10,64 @@ const EASE_OUT_EXPO = [0.22, 1, 0.36, 1];
 
 const scrollViewportConfig = {
   once: true,
-  amount: 0.15,
-  margin: '0px 0px -50px 0px',
+  amount: 0.1,
+  margin: '0px 0px -40px 0px',
 };
+
+function parseStatValue(val) {
+  const match = String(val).match(/^(\d+)(.*)$/);
+  if (!match) return { num: 0, suffix: val };
+  return { num: parseInt(match[1], 10), suffix: match[2] };
+}
+
+function StatCounter({ value, isInView, delay = 0, duration = 1.6 }) {
+  const [count, setCount] = useState(0);
+  const { num, suffix } = parseStatValue(value);
+  const reducedMotion = useReducedMotionPreference();
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setCount(num);
+      return;
+    }
+    if (!isInView) return;
+
+    let startTimestamp = null;
+    let animationFrameId;
+
+    const timeoutId = setTimeout(() => {
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const elapsed = (timestamp - startTimestamp) / 1000;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Smooth easeOutExpo: 1 - 2^(-10 * progress)
+        const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const current = Math.round(easeProgress * num);
+
+        setCount(current);
+
+        if (progress < 1) {
+          animationFrameId = requestAnimationFrame(step);
+        }
+      };
+
+      animationFrameId = requestAnimationFrame(step);
+    }, delay * 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
+  }, [isInView, num, duration, delay, reducedMotion]);
+
+  return (
+    <span className="font-heading text-2xl sm:text-3xl font-bold text-[#35C5E8] tabular-nums">
+      {count}
+      {suffix}
+    </span>
+  );
+}
 
 /**
  * AboutStudioSection — Clear, approachable brand voice with premium scroll animations.
@@ -20,6 +76,8 @@ const scrollViewportConfig = {
  */
 export function AboutStudioSection() {
   const reducedMotion = useReducedMotionPreference();
+  const statsRef = useRef(null);
+  const isStatsInView = useInView(statsRef, { once: true, amount: 0.2 });
 
   // Left column animations
   const eyebrowVariant = {
@@ -260,7 +318,8 @@ export function AboutStudioSection() {
                 <motion.div
                   key={pillar.title}
                   variants={reducedMotion ? undefined : cardCascadeVariant(idx)}
-                  className="p-6 rounded-2xl bg-[#F7F9FC] border border-[#E3E8F0] hover:border-[#2764F5]/40 transition-colors shadow-xs"
+                  whileHover={reducedMotion ? undefined : { y: -3, transition: { duration: 0.2 } }}
+                  className="p-6 rounded-2xl bg-[#F7F9FC] border border-[#E3E8F0] hover:border-[#2764F5]/40 hover:shadow-md transition-all duration-200 shadow-xs"
                 >
                   <div className="flex items-center gap-3 mb-2">
                     <motion.span
@@ -280,8 +339,9 @@ export function AboutStudioSection() {
               ))}
             </div>
 
-            {/* Quick Stat Bar with subtle reveal */}
+            {/* Quick Stat Bar with subtle reveal & dynamic 0-to-target counter */}
             <motion.div
+              ref={statsRef}
               variants={reducedMotion ? undefined : statPanelVariant}
               className="grid grid-cols-3 gap-4 p-5 rounded-2xl bg-[#101B2D] text-white shadow-md border border-[#273752]"
             >
@@ -291,9 +351,12 @@ export function AboutStudioSection() {
                   variants={reducedMotion ? undefined : statItemVariant(idx)}
                   className="flex flex-col gap-1 text-center"
                 >
-                  <span className="font-heading text-2xl sm:text-3xl font-bold text-[#35C5E8]">
-                    {stat.value}
-                  </span>
+                  <StatCounter
+                    value={stat.value}
+                    isInView={isStatsInView}
+                    delay={0.25 + idx * 0.12}
+                    duration={1.5}
+                  />
                   <span className="text-[11px] text-[#CBD5E1] leading-tight">
                     {stat.label}
                   </span>

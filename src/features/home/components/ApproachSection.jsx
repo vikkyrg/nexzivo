@@ -1,316 +1,410 @@
-import { useState } from 'react';
-import { motion } from 'motion/react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useInView } from 'motion/react';
 import { Container } from '@/components/ui/Container';
 import { processContent } from '../data/homeContent';
 import { useReducedMotionPreference } from '@/hooks/useReducedMotionPreference';
+import { Compass, Palette, Layers, CheckCircle2 } from 'lucide-react';
 
 const EASE_OUT_EXPO = [0.22, 1, 0.36, 1];
+const AUTO_PROGRESS_INTERVAL = 4000; // 4 seconds per step
 
-const scrollViewportConfig = {
-  once: true,
-  amount: 0.15,
-  margin: '0px 0px -50px 0px',
-};
+const stepIcons = [Compass, Palette, Layers, CheckCircle2];
 
 /**
- * ApproachSection / Our Process — Interactive Connected Timeline Workflow:
- * 1. Discover — Focus & listen (search-pulse icon)
- * 2. Design — Visual direction & UX (creative pencil angle slide)
- * 3. Build — Engineering & creation (stacked layer lift)
- * 4. Deliver — Testing & handover (completion check-circle pop)
+ * ApproachSection — Our Process with Coordinated Scroll-Triggered Entrance
+ * and Seamless Shared-Layer Step Transitions:
  *
- * Connected horizontal timeline line on desktop, vertical connector on mobile.
+ * Sequence on scroll into view:
+ * 1. Eyebrow label slides up and fades in.
+ * 2. Main heading with handwritten "ideas to life." reveals smoothly.
+ * 3. Supporting description fades in.
+ * 4. Step navigation pills settle into position.
+ * 5. Four cards stagger in from left to right.
+ * 6. Blue layered backing appears behind Card 01 (Discover).
+ * 7. Entrance completes, initiating subtle 4-second automatic progression.
  */
 export function ApproachSection() {
   const reducedMotion = useReducedMotionPreference();
-  const [hoveredIdx, setHoveredIdx] = useState(null);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.15, margin: '0px 0px -40px 0px' });
 
-  // Heading reveal variants
+  const [activeStep, setActiveStep] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [entranceDone, setEntranceDone] = useState(false);
+
+  const steps = processContent.steps;
+  const totalSteps = steps.length;
+
+  // Track completion of the staged entrance sequence (~1s total)
+  useEffect(() => {
+    if (!isInView) return;
+    if (reducedMotion) {
+      setEntranceDone(true);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setEntranceDone(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [isInView, reducedMotion]);
+
+  // Automatic progression: 4s interval, runs only after entrance completes while in view
+  useEffect(() => {
+    if (!isInView || !entranceDone || isPaused || reducedMotion) return;
+
+    const timer = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % totalSteps);
+    }, AUTO_PROGRESS_INTERVAL);
+
+    return () => clearInterval(timer);
+  }, [isInView, entranceDone, isPaused, reducedMotion, totalSteps]);
+
+  // Staged entrance animation variants
   const eyebrowVariant = {
-    hidden: { opacity: 0, x: -10 },
+    hidden: { opacity: 0, y: 12 },
     visible: {
       opacity: 1,
-      x: 0,
-      transition: { duration: 0.5, ease: EASE_OUT_EXPO },
-    },
-  };
-
-  const lineDrawVariant = {
-    hidden: { width: 0, opacity: 0 },
-    visible: {
-      width: '1.25rem',
-      opacity: 1,
-      transition: { duration: 0.45, delay: 0.1, ease: EASE_OUT_EXPO },
+      y: 0,
+      transition: { duration: 0.5, delay: 0.06, ease: EASE_OUT_EXPO },
     },
   };
 
   const headingVariant = {
-    hidden: { opacity: 0, y: 22 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.65, delay: 0.12, ease: EASE_OUT_EXPO },
-    },
-  };
-
-  const descriptionVariant = {
     hidden: { opacity: 0, y: 16 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, delay: 0.22, ease: EASE_OUT_EXPO },
+      transition: { duration: 0.6, delay: 0.18, ease: EASE_OUT_EXPO },
     },
   };
 
-  // Connecting timeline line variants
-  const timelineLineVariant = {
-    hidden: { scaleX: 0, originX: 0, opacity: 0 },
+  const descriptionVariant = {
+    hidden: { opacity: 0, y: 12 },
     visible: {
-      scaleX: 1,
-      originX: 0,
       opacity: 1,
-      transition: { duration: 1.0, delay: 0.25, ease: EASE_OUT_EXPO },
+      y: 0,
+      transition: { duration: 0.55, delay: 0.3, ease: EASE_OUT_EXPO },
     },
   };
 
-  // Distinct entrance per step
-  const cardEntranceVariant = (idx) => {
-    // 01: Discover (gentle focus sharpen + settle)
-    // 02: Design (subtle lateral slide & settle)
-    // 03: Build (upward layer glide)
-    // 04: Deliver (refined completion settle)
-    const yOffsets = [24, 20, 24, 18];
-    const xOffsets = [0, 8, 0, 0];
-
-    return {
-      hidden: {
-        opacity: 0,
-        y: yOffsets[idx] || 20,
-        x: xOffsets[idx] || 0,
-        scale: idx === 0 ? 0.98 : 1,
-      },
-      visible: {
-        opacity: 1,
-        y: 0,
-        x: 0,
-        scale: 1,
-        transition: {
-          duration: 0.65,
-          delay: 0.2 + idx * 0.14,
-          ease: EASE_OUT_EXPO,
-        },
-      },
-    };
+  const pillGroupVariant = {
+    hidden: { opacity: 0, y: 14 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.55, delay: 0.36, ease: EASE_OUT_EXPO },
+    },
   };
 
-  // Micro-motion for step icons based on step index
-  const getIconAnimation = (idx, isHovered) => {
-    if (!isHovered || reducedMotion) return {};
-    switch (idx) {
-      case 0: // Discover: search focus pulse
-        return { scale: [1, 1.15, 1.08], rotate: [0, -6, 0], transition: { duration: 0.35 } };
-      case 1: // Design: drawing pencil gesture
-        return { rotate: [0, -12, 4, 0], x: [0, 2, -1, 0], transition: { duration: 0.4 } };
-      case 2: // Build: layer lift
-        return { y: [0, -4, 0], scale: [1, 1.08, 1], transition: { duration: 0.35 } };
-      case 3: // Deliver: checkmark completion pop
-        return { scale: [1, 1.2, 1.1], transition: { duration: 0.3 } };
-      default:
-        return { scale: 1.08 };
-    }
-  };
+  const cardEntranceVariant = (idx) => ({
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        delay: 0.44 + idx * 0.12,
+        ease: EASE_OUT_EXPO,
+      },
+    },
+  });
 
   return (
-    <section id="process" className="section relative bg-[#F7F9FC] border-b border-[#E3E8F0] overflow-hidden">
-      {/* Subtle Project-Themed Background Elements */}
+    <section
+      ref={sectionRef}
+      id="process"
+      aria-label="Our Process"
+      className="section relative bg-[#F7F9FC] border-b border-[#E3E8F0] overflow-hidden py-20 sm:py-24 lg:py-28"
+    >
+      {/* Background Studio Gradients & Ambience */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         {/* Soft edge ambient glows */}
-        <div className="absolute -top-32 -left-32 h-[450px] w-[450px] rounded-full bg-gradient-to-br from-[#2764F5]/5 via-[#35C5E8]/4 to-transparent blur-3xl" />
-        <div className="absolute -bottom-32 -right-32 h-[450px] w-[450px] rounded-full bg-gradient-to-tl from-[#35C5E8]/5 via-[#2764F5]/3 to-transparent blur-3xl" />
+        <div className="absolute -top-32 -left-32 h-[480px] w-[480px] rounded-full bg-gradient-to-br from-[#2764F5]/6 via-[#35C5E8]/4 to-transparent blur-3xl" />
+        <div className="absolute -bottom-36 -right-36 h-[500px] w-[500px] rounded-full bg-gradient-to-tl from-[#35C5E8]/6 via-[#2764F5]/4 to-transparent blur-3xl" />
 
-        {/* Oversized Brand Geometry / Slanted Polygonal Ribbon (Top Right Edge) */}
+        {/* Subtle architectural dot grid behind cards */}
         <svg
-          className="absolute -top-20 -right-24 w-[460px] h-[460px] text-[#2764F5]/[0.035] transform -rotate-12"
-          viewBox="0 0 500 500"
-          fill="none"
+          className="absolute inset-0 w-full h-full text-[#2764F5]/[0.02]"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <path
-            d="M 140 60 L 440 60 L 360 440 L 60 440 Z"
-            stroke="currentColor"
-            strokeWidth="28"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M 200 120 L 420 120 L 360 380 L 140 380 Z"
-            stroke="currentColor"
-            strokeWidth="3"
-            strokeDasharray="14 14"
-          />
-        </svg>
-
-        {/* Subtle Geometric Stepped Ring (Bottom Left Edge) */}
-        <svg
-          className="absolute -bottom-20 -left-20 w-[380px] h-[380px] text-[#35C5E8]/[0.04]"
-          viewBox="0 0 400 400"
-          fill="none"
-        >
-          <circle cx="150" cy="250" r="180" stroke="currentColor" strokeWidth="20" />
-          <circle cx="150" cy="250" r="120" stroke="currentColor" strokeWidth="2" strokeDasharray="8 8" />
+          <defs>
+            <pattern id="process-bg-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1.2" fill="currentColor" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#process-bg-grid)" />
         </svg>
       </div>
 
-      <Container className="relative z-10">
-        {/* Editorial Heading Entrance */}
-        <motion.div
-          initial={reducedMotion ? false : 'hidden'}
-          whileInView={reducedMotion ? undefined : 'visible'}
-          viewport={scrollViewportConfig}
-          className="max-w-3xl mb-14"
-        >
-          <div className="flex flex-col gap-3">
-            <motion.div variants={eyebrowVariant} className="inline-flex items-center gap-2">
-              <motion.span
-                variants={lineDrawVariant}
-                className="h-0.5 rounded-full bg-[#2764F5]"
-                aria-hidden="true"
-              />
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#2764F5]">
-                {processContent.eyebrow}
-              </span>
+      <Container className="relative z-10 max-w-[1360px]">
+        {/* Left-Aligned Section Heading & Controls Row */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12 sm:mb-14 lg:mb-16">
+          <div className="max-w-2xl text-left">
+            {/* 1. Eyebrow Label with Consistent Line-Dash Style */}
+            <motion.div
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              variants={reducedMotion ? undefined : eyebrowVariant}
+              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#2764F5] mb-3"
+            >
+              <span className="h-0.5 w-5 rounded-full bg-[#2764F5]" aria-hidden="true" />
+              <span>{processContent.eyebrow}</span>
             </motion.div>
 
+            {/* 2. Main Heading with Handwritten Accent */}
             <motion.h2
-              variants={headingVariant}
-              className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl text-[#141B2A]"
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              variants={reducedMotion ? undefined : headingVariant}
+              className="font-heading text-3xl sm:text-4xl lg:text-[44px] xl:text-[48px] font-bold text-[#141B2A] tracking-tight leading-[1.15]"
             >
-              {processContent.heading}
+              Here’s how we bring{' '}
+              <span className="font-handwriting text-[#2764F5] text-[1.22em] sm:text-[1.28em] font-bold inline-block transform -rotate-2 ml-1 align-baseline">
+                ideas to life.
+              </span>
             </motion.h2>
 
+            {/* 3. Supporting Text */}
             <motion.p
-              variants={descriptionVariant}
-              className="max-w-2xl text-base leading-relaxed sm:text-lg text-[#687386]"
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              variants={reducedMotion ? undefined : descriptionVariant}
+              className="text-base sm:text-lg text-[#687386] leading-relaxed mt-3 max-w-xl"
             >
               {processContent.description}
             </motion.p>
           </div>
-        </motion.div>
 
-        {/* 4-Step Process Timeline Container */}
-        <motion.div
-          initial={reducedMotion ? false : 'hidden'}
-          whileInView={reducedMotion ? undefined : 'visible'}
-          viewport={scrollViewportConfig}
-          className="relative"
-        >
-          {/* Subtle Connected Horizontal Timeline Line (Desktop lg+) */}
-          <div className="hidden lg:block pointer-events-none absolute top-12 left-10 right-10 h-0.5 z-0" aria-hidden="true">
-            {/* Base subtle guide line */}
-            <div className="absolute inset-0 bg-[#E2E8F0]" />
-            {/* Animated drawing line */}
-            <motion.div
-              variants={reducedMotion ? undefined : timelineLineVariant}
-              className="absolute inset-0 bg-gradient-to-r from-[#2764F5] via-[#35C5E8] to-[#2764F5] opacity-60"
-            />
-            {/* Hover highlight glow segment */}
-            {hoveredIdx !== null && (
-              <motion.div
-                layoutId="timeline-highlight"
-                className="absolute top-[-1px] h-[3px] bg-[#2764F5] rounded-full shadow-[0_0_8px_rgba(39,100,245,0.6)]"
-                style={{
-                  left: `${hoveredIdx * 25}%`,
-                  width: '25%',
-                }}
-                transition={{ duration: 0.25, ease: EASE_OUT_EXPO }}
-              />
-            )}
-          </div>
-
-          {/* 4-Step Process Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-            {processContent.steps.map((step, idx) => {
-              const Icon = step.icon;
-              const isHovered = hoveredIdx === idx;
-
+          {/* 4. Quick Step Switcher Pills with Shared Animated Background Indicator */}
+          <motion.div
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            variants={reducedMotion ? undefined : pillGroupVariant}
+            className="flex flex-wrap items-center gap-2 self-start lg:self-end shrink-0 p-1.5 rounded-full bg-white/80 backdrop-blur-xs border border-[#E3E8F0] shadow-xs"
+          >
+            {steps.map((step, idx) => {
+              const isActive = activeStep === idx;
               return (
-                <motion.div
+                <button
                   key={step.number}
-                  custom={idx}
-                  variants={reducedMotion ? undefined : cardEntranceVariant(idx)}
-                  className="flex flex-col h-full"
-                  onMouseEnter={() => setHoveredIdx(idx)}
-                  onMouseLeave={() => setHoveredIdx(null)}
+                  type="button"
+                  onClick={() => {
+                    setActiveStep(idx);
+                    setIsPaused(true);
+                  }}
+                  onMouseEnter={() => {
+                    setActiveStep(idx);
+                    setIsPaused(true);
+                  }}
+                  onFocus={() => setIsPaused(true)}
+                  onBlur={() => setIsPaused(false)}
+                  aria-pressed={isActive}
+                  aria-label={`Go to ${step.step} ${step.phase}: ${step.title}`}
+                  className="relative px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2764F5]"
                 >
-                  <article
-                    className={`relative flex flex-col justify-between h-full p-7 rounded-2xl bg-white border transition-all duration-300 shadow-sm overflow-hidden group ${
-                      isHovered
-                        ? 'border-[#2764F5] shadow-lg -translate-y-1'
-                        : 'border-[#E3E8F0] hover:border-[#2764F5]/40 hover:shadow-md hover:-translate-y-0.5'
-                    }`}
-                  >
-                    {/* Top Step Highlight Accent Strip on Hover */}
-                    <div
-                      className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#2764F5] to-[#35C5E8] transition-opacity duration-300 ${
-                        isHovered ? 'opacity-100' : 'opacity-0'
+                  {/* Shared Animated Pill Background */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeStepPillBg"
+                      transition={{
+                        type: 'spring',
+                        stiffness: 380,
+                        damping: 32,
+                      }}
+                      className="absolute inset-0 rounded-full bg-[#101B2D] shadow-xs"
+                    />
+                  )}
+
+                  {/* Active Step Progress Line Fill (visual timer indicator) */}
+                  {isActive && entranceDone && !isPaused && !reducedMotion && (
+                    <motion.span
+                      key={`progress-fill-${activeStep}`}
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: AUTO_PROGRESS_INTERVAL / 1000, ease: 'linear' }}
+                      className="absolute bottom-1 left-3.5 right-3.5 h-[2px] bg-[#35C5E8] origin-left rounded-full pointer-events-none"
+                    />
+                  )}
+
+                  <span className="relative z-10 flex items-center gap-2">
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full transition-colors duration-200 ${
+                        isActive ? 'bg-[#35C5E8]' : 'bg-[#94A3B8]'
                       }`}
                     />
-
-                    {/* Step header: Number + Icon */}
-                    <div>
-                      <div className="flex items-center justify-between mb-6">
-                        <span
-                          className={`font-mono text-3xl font-extrabold transition-colors duration-200 ${
-                            isHovered ? 'text-[#2764F5]' : 'text-[#CBD5E1] group-hover:text-[#2764F5]'
-                          }`}
-                        >
-                          {step.number}
-                        </span>
-
-                        <motion.div
-                          animate={getIconAnimation(idx, isHovered)}
-                          className={`flex h-11 w-11 items-center justify-center rounded-xl transition-colors duration-200 ${
-                            isHovered
-                              ? 'bg-[#2764F5] text-white shadow-sm shadow-[#2764F5]/30'
-                              : 'bg-[#2764F5]/10 text-[#2764F5] group-hover:bg-[#2764F5] group-hover:text-white'
-                          }`}
-                        >
-                          <Icon size={20} />
-                        </motion.div>
-                      </div>
-
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#2764F5] block mb-1">
-                        {step.tagline}
-                      </span>
-
-                      <h3 className="font-heading text-xl font-bold text-[#141B2A] mb-3">
-                        {step.title}
-                      </h3>
-
-                      <p className="text-sm leading-relaxed text-[#687386]">
-                        {step.description}
-                      </p>
-                    </div>
-
-                    {/* Step indicator footer with completion badge on step 04 */}
-                    <div className="mt-6 pt-4 border-t border-[#E3E8F0] flex items-center justify-between text-xs text-[#687386]">
-                      <span className="font-medium">
-                        Step 0{idx + 1} of 04
-                      </span>
-                      <span
-                        className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                          idx === 3
-                            ? 'bg-[#2764F5] ring-4 ring-[#2764F5]/15'
-                            : isHovered
-                            ? 'bg-[#2764F5] scale-125'
-                            : 'bg-[#35C5E8]'
-                        }`}
-                      />
-                    </div>
-                  </article>
-                </motion.div>
+                    <span className={isActive ? 'text-white' : 'text-[#64748B] hover:text-[#141B2A]'}>
+                      {step.number} {step.phase}
+                    </span>
+                  </span>
+                </button>
               );
             })}
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
+
+        {/* 5. Four Creative Process Cards with Shared Animated Overlapping Layer */}
+        <div
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 xl:gap-8 items-stretch"
+        >
+          {steps.map((step, idx) => {
+            const isActive = activeStep === idx;
+            const Icon = stepIcons[idx] || Compass;
+
+            return (
+              <motion.div
+                key={step.number}
+                custom={idx}
+                initial="hidden"
+                animate={isInView ? 'visible' : 'hidden'}
+                variants={reducedMotion ? undefined : cardEntranceVariant(idx)}
+                whileHover={reducedMotion ? undefined : { y: isActive ? -8 : -5 }}
+                transition={{ duration: 0.25, ease: EASE_OUT_EXPO }}
+                className="relative group select-none"
+                onClick={() => {
+                  setActiveStep(idx);
+                  setIsPaused(true);
+                }}
+                onMouseEnter={() => {
+                  setActiveStep(idx);
+                  setIsPaused(true);
+                }}
+                onFocus={() => setIsPaused(true)}
+                onBlur={() => setIsPaused(false)}
+                tabIndex={0}
+                role="button"
+                aria-pressed={isActive}
+                aria-label={`${step.step} ${step.phase}: ${step.title}`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveStep(idx);
+                    setIsPaused(true);
+                  }
+                }}
+              >
+                {/* 6. Shared Overlapping Blue Accent Layer — Appears smoothly on card 01 and glides between cards */}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeProcessCardBacking"
+                    initial={entranceDone ? false : { opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={
+                      reducedMotion
+                        ? { duration: 0 }
+                        : {
+                            type: 'spring',
+                            stiffness: 280,
+                            damping: 28,
+                            delay: entranceDone ? 0 : 0.95,
+                          }
+                    }
+                    className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#2764F5] via-[#2058DE] to-[#35C5E8] pointer-events-none shadow-xl shadow-[#2764F5]/25 overflow-hidden translate-x-3.5 translate-y-3.5 rotate-[4.5deg]"
+                    aria-hidden="true"
+                  >
+                    {/* Abstract glowing ambient orbs */}
+                    <div className="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-white/20 blur-xl" />
+                    <div className="absolute -bottom-12 -left-12 w-44 h-44 rounded-full bg-[#35C5E8]/35 blur-xl" />
+                    {/* Faint geometric pattern */}
+                    <svg
+                      className="absolute inset-0 w-full h-full text-white/10"
+                      viewBox="0 0 200 200"
+                      fill="currentColor"
+                    >
+                      <pattern id={`card-mesh-${idx}`} x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+                        <circle cx="2" cy="2" r="1.2" />
+                      </pattern>
+                      <rect width="200" height="200" fill={`url(#card-mesh-${idx})`} />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Front Card Layer — Smoothly elevates and highlights without layout shift */}
+                <motion.article
+                  animate={{
+                    y: isActive ? -6 : 0,
+                    borderColor: isActive ? '#2764F5' : '#E3E8F0',
+                    boxShadow: isActive
+                      ? '0 20px 40px -15px rgba(39, 100, 245, 0.22)'
+                      : '0 2px 8px -2px rgba(16, 27, 45, 0.05)',
+                  }}
+                  transition={{ duration: 0.35, ease: EASE_OUT_EXPO }}
+                  className="relative z-10 flex flex-col justify-between h-full min-h-[360px] sm:min-h-[380px] p-7 sm:p-8 rounded-3xl bg-white border cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#2764F5]"
+                >
+                  {/* Top Section: Step Indicator & Icon */}
+                  <div>
+                    <div className="flex items-center justify-between gap-3 mb-6">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider transition-colors duration-200 ${
+                          isActive
+                            ? 'bg-[#EEF4FF] text-[#2764F5] border border-[#2764F5]/30'
+                            : 'bg-[#F7F9FC] text-[#687386] border border-[#E3E8F0]'
+                        }`}
+                      >
+                        <span
+                          className={`h-1.5 w-1.5 rounded-full transition-colors duration-200 ${
+                            isActive ? 'bg-[#2764F5]' : 'bg-[#CBD5E1]'
+                          }`}
+                        />
+                        {step.step} — {step.phase}
+                      </span>
+
+                      {/* Icon with subtle scale & spring transition */}
+                      <motion.span
+                        animate={{
+                          backgroundColor: isActive ? '#2764F5' : '#EEF4FF',
+                          color: isActive ? '#FFFFFF' : '#2764F5',
+                          scale: isActive ? 1.05 : 1,
+                        }}
+                        whileHover={{ scale: 1.12, rotate: [0, -3, 3, 0] }}
+                        transition={{ duration: 0.3 }}
+                        className="flex h-10 w-10 items-center justify-center rounded-xl shadow-2xs"
+                      >
+                        <Icon size={19} />
+                      </motion.span>
+                    </div>
+
+                    {/* Large Bold Card Title */}
+                    <h3
+                      className={`font-heading text-[22px] sm:text-[24px] font-bold tracking-tight leading-[1.22] transition-colors duration-200 ${
+                        isActive ? 'text-[#141B2A]' : 'text-[#141B2A] group-hover:text-[#2764F5]'
+                      }`}
+                    >
+                      {step.title}
+                    </h3>
+                  </div>
+
+                  {/* Bottom Section: Description & Smooth Indicator Dot */}
+                  <div className="mt-8 pt-5 border-t border-[#EEF2F6]">
+                    <p className="text-[14px] sm:text-[14.5px] leading-relaxed text-[#687386] mb-4">
+                      {step.description}
+                    </p>
+
+                    <div className="flex items-center justify-between text-xs text-[#8B95A5]">
+                      <span className="font-medium">
+                        Phase 0{idx + 1}
+                      </span>
+                      <motion.span
+                        animate={{
+                          backgroundColor: isActive ? '#2764F5' : '#CBD5E1',
+                          scale: isActive ? 1.25 : 1,
+                          boxShadow: isActive
+                            ? '0 0 0 4px rgba(39, 100, 245, 0.18)'
+                            : '0 0 0 0px transparent',
+                        }}
+                        transition={{ duration: 0.3 }}
+                        className="h-2 w-2 rounded-full"
+                      />
+                    </div>
+                  </div>
+                </motion.article>
+              </motion.div>
+            );
+          })}
+        </div>
       </Container>
     </section>
   );

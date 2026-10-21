@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useInView } from 'motion/react';
+import { motion, useInView, useScroll, useTransform } from 'motion/react';
 import { Link } from 'react-router-dom';
 import {
   Code2,
@@ -15,6 +15,7 @@ import {
 import { Container } from '@/components/ui/Container';
 import { whatWeDoContent } from '../data/homeContent';
 import { useReducedMotionPreference } from '@/hooks/useReducedMotionPreference';
+import serviceBg from '@/assets/servicebg.jpg';
 
 const EASE_OUT_EXPO = [0.22, 1, 0.36, 1];
 const AUTOPLAY_INTERVAL = 4000; // Exact 4 seconds rotation
@@ -40,6 +41,13 @@ export function WhatWeDoSection() {
   const reducedMotion = useReducedMotionPreference();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1, margin: '0px 0px 80px 0px' });
+
+  // High-performance hardware-accelerated scroll parallax
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(3);
@@ -163,10 +171,27 @@ export function WhatWeDoSection() {
       aria-label="What We Do - Our Services"
       className="section relative bg-[#F7F9FC] border-b border-[#E3E8F0] overflow-hidden"
     >
-      {/* Background Studio Gradients */}
+      {/* High-Performance GPU Parallax Background Image with Mild Blur */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute -top-36 -right-36 h-[480px] w-[480px] rounded-full bg-gradient-to-bl from-[#2764F5]/4 via-[#35C5E8]/3 to-transparent blur-3xl" />
-        <div className="absolute -bottom-36 -left-36 h-[480px] w-[480px] rounded-full bg-gradient-to-tr from-[#35C5E8]/4 via-[#2764F5]/3 to-transparent blur-3xl" />
+        <motion.div
+          style={{ y: reducedMotion ? 0 : bgY }}
+          className="absolute -top-[10%] -bottom-[10%] -left-[2%] -right-[2%] will-change-transform transform-gpu"
+        >
+          <img
+            src={serviceBg}
+            alt=""
+            loading="eager"
+            decoding="async"
+            className="w-full h-full object-cover object-center filter blur-[2.5px] scale-[1.03]"
+          />
+        </motion.div>
+
+        {/* Soft studio light overlay for pristine text contrast without GPU penalty */}
+        <div className="absolute inset-0 bg-[#F8FAFC]/75" />
+
+        {/* Ambient subtle studio glow */}
+        <div className="absolute -top-36 -right-36 h-[480px] w-[480px] rounded-full bg-gradient-to-bl from-[#2764F5]/6 via-[#35C5E8]/4 to-transparent blur-3xl" />
+        <div className="absolute -bottom-36 -left-36 h-[480px] w-[480px] rounded-full bg-gradient-to-tr from-[#35C5E8]/6 via-[#2764F5]/4 to-transparent blur-3xl" />
       </div>
 
       <Container className="relative z-10">
@@ -179,8 +204,8 @@ export function WhatWeDoSection() {
         >
           <div>
             {/* Project Brand Eyebrow */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#E3E8F0] text-[11px] font-mono font-bold tracking-widest text-[#2764F5] uppercase mb-3.5 shadow-2xs">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#2764F5]" />
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#2764F5] mb-3.5">
+              <span className="h-0.5 w-5 rounded-full bg-[#2764F5]" aria-hidden="true" />
               <span>{whatWeDoContent.eyebrow}</span>
             </div>
 
@@ -252,7 +277,7 @@ export function WhatWeDoSection() {
                   }}
                   className="flex flex-col shrink-0"
                 >
-                  <article className="group relative flex flex-col justify-between h-full p-7 sm:p-8 rounded-2xl bg-white border border-[#E3E8F0] hover:border-[#2764F5]/50 shadow-[0_4px_16px_-4px_rgba(16,27,45,0.05)] hover:shadow-[0_16px_36px_-6px_rgba(39,100,245,0.12)] hover:-translate-y-1 transition-all duration-200 overflow-hidden">
+                  <article className="group relative flex flex-col justify-between h-full p-7 sm:p-8 rounded-2xl bg-white border border-[#E3E8F0] hover:border-[#2764F5]/50 shadow-[0_4px_20px_-4px_rgba(16,27,45,0.06)] hover:shadow-[0_16px_36px_-6px_rgba(39,100,245,0.15)] hover:-translate-y-1 transition-all duration-200 overflow-hidden">
                     {/* Top Brand Accent Strip on Hover */}
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#2764F5] to-[#35C5E8] opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 

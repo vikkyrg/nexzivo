@@ -126,8 +126,8 @@ export function VisionMissionSection() {
         {/* Compact Header & Vision/Mission Carousel Controls */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 mb-8 sm:mb-10">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#E3E8F0] text-[11px] font-mono font-bold tracking-widest text-[#2764F5] uppercase mb-2 shadow-2xs">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#2764F5]" />
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#2764F5] mb-3">
+              <span className="h-0.5 w-5 rounded-full bg-[#2764F5]" aria-hidden="true" />
               <span>Studio Purpose &amp; Direction</span>
             </div>
             <h2 className="font-heading text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#141B2A] tracking-tight leading-tight">
