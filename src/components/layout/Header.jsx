@@ -11,15 +11,16 @@ import logoSrc from '@/assets/logo.png';
 
 /**
  * NEXZIVO Studio Header.
- * Sticky, scroll-aware navigation with a clean dark surface, restrained accent
- * underline, and high-contrast typography. Preserves the unaltered logo.
+ * Deep navy (#101B2D) background so the white, blue, and cyan logo is clearly visible.
+ * Readable light text (#DCE4F0) for inactive links, brand blue (#2764F5) with cyan accent
+ * for active link indicators, and prominent blue CTA button.
  */
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 20);
+    const onScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -33,19 +34,19 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-200 ${
           isScrolled
-            ? 'bg-[var(--color-obsidian)]/92 backdrop-blur-sm border-b border-[var(--color-slate-border)]'
-            : 'bg-transparent border-b border-transparent'
+            ? 'bg-[#101B2D]/95 backdrop-blur-md border-b border-[#273752] shadow-md'
+            : 'bg-[#101B2D] border-b border-[#273752]/80'
         }`}
       >
         <Container>
-          <div className="flex h-18 items-center justify-between lg:h-22">
-            {/* ── Brand Logo (preserved, no glow) ── */}
+          <div className="flex h-20 items-center justify-between">
+            {/* ── Brand Logo (Original unaltered logo) ── */}
             <Link
               to="/"
-              className="flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-soft)] group py-1"
-              aria-label={`${siteConfig.name} — studio homepage`}
+              className="flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#35C5E8] group py-1"
+              aria-label={`${siteConfig.name} — Homepage`}
             >
               <img
                 src={logoSrc}
@@ -53,10 +54,10 @@ export function Header() {
                 className="h-9 sm:h-10 w-auto object-contain"
               />
               <div className="flex flex-col">
-                <span className="font-heading text-xl font-bold tracking-tight text-[var(--color-soft-white)] transition-colors group-hover:text-white">
+                <span className="font-heading text-xl font-extrabold tracking-tight text-white transition-colors group-hover:text-[#35C5E8]">
                   {siteConfig.name}
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent-soft)] -mt-0.5">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#35C5E8] -mt-0.5">
                   Creative Studio
                 </span>
               </div>
@@ -70,10 +71,10 @@ export function Header() {
                   to={item.href}
                   end={item.href === '/'}
                   className={({ isActive }) =>
-                    `group relative py-1 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-soft)] rounded-sm ${
+                    `group relative py-1 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#35C5E8] rounded-sm ${
                       isActive
-                        ? 'text-[var(--color-soft-white)]'
-                        : 'text-[var(--color-subtle-gray)] hover:text-[var(--color-soft-white)]'
+                        ? 'text-[#35C5E8]'
+                        : 'text-[#DCE4F0] hover:text-white'
                     }`
                   }
                 >
@@ -81,7 +82,7 @@ export function Header() {
                     <>
                       <span>{item.label}</span>
                       <span
-                        className={`absolute -bottom-0.5 left-0 h-px w-full origin-left bg-[var(--color-accent)] transition-transform duration-300 ${
+                        className={`absolute -bottom-1 left-0 h-0.5 w-full origin-left rounded-full bg-[#2764F5] transition-transform duration-200 ${
                           isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                         }`}
                         aria-hidden="true"
@@ -96,9 +97,9 @@ export function Header() {
             <div className="flex items-center gap-3">
               <Button
                 to="/contact"
-                size="sm"
+                size="md"
                 variant="primary"
-                iconRight={<ArrowUpRight size={14} />}
+                iconRight={<ArrowUpRight size={15} />}
                 className="hidden lg:inline-flex"
               >
                 Start a Project
@@ -110,7 +111,7 @@ export function Header() {
                 aria-expanded={isMobileOpen}
                 aria-controls="mobile-nav"
                 onClick={() => setIsMobileOpen((prev) => !prev)}
-                className="lg:hidden flex items-center justify-center h-10 w-10 rounded-xl border border-[var(--color-slate-border)] bg-[var(--color-slate-card)] text-[var(--color-soft-white)] hover:border-[var(--color-accent)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-soft)]"
+                className="lg:hidden flex items-center justify-center h-10 w-10 rounded-xl border border-[#273752] bg-[#18263E] text-white hover:bg-[#20314F] hover:border-[#35C5E8] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#35C5E8]"
               >
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.span

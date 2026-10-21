@@ -1,94 +1,291 @@
-import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { SectionReveal } from '@/components/ui/SectionReveal';
-import { staggerContainer, staggerChild, scrollViewport } from '@/lib/motion';
+import { coreStudioServices, servicesSectionContent } from '../data/homeContent';
 import { useReducedMotionPreference } from '@/hooks/useReducedMotionPreference';
-import { servicesContent } from '../data/homeContent';
+
+// Preloaded real studio preview assets
+import webPreview from '@/assets/showcase/service-web.jpg';
+import mobilePreview from '@/assets/showcase/service-mobile.jpg';
+import uiuxPreview from '@/assets/showcase/service-uiux.jpg';
+import posterPreview from '@/assets/showcase/service-poster.jpg';
+import softwarePreview from '@/assets/showcase/service-software.jpg';
+
+const previewImages = {
+  web: webPreview,
+  mobile: mobilePreview,
+  uiux: uiuxPreview,
+  poster: posterPreview,
+  software: softwarePreview,
+};
+
+const EASE_OUT_EXPO = [0.22, 1, 0.36, 1];
+
+// Viewport trigger settings for scroll-based animations (runs once on scroll)
+const scrollViewportConfig = {
+  once: true,
+  amount: 0.15,
+  margin: '0px 0px -60px 0px',
+};
 
 /**
- * ServicesSection — Studio grid of digital services.
+ * ServicesSection — Balanced 5-service layout with premium scroll animations.
+ * Features:
+ * - Editorial heading reveal with staggered line-reveal on eyebrow & link
+ * - Cascading 100-140ms staggered card entrance
+ * - Signature vertical mask / clip-path image uncover
+ * - Premium hover interaction with subtle card raise and icon translation
  */
 export function ServicesSection() {
   const reducedMotion = useReducedMotionPreference();
 
+  // Heading reveal variants
+  const headingVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.65, ease: EASE_OUT_EXPO },
+    },
+  };
+
+  const linkVariants = {
+    hidden: { opacity: 0, x: -8 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.5, delay: 0.25, ease: EASE_OUT_EXPO },
+    },
+  };
+
+  // Card cascading entrance variants
+  const cardVariants = {
+    hidden: { opacity: 0, y: 28 },
+    visible: (custom) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        delay: custom * 0.12, // 120ms stagger between cards
+        ease: EASE_OUT_EXPO,
+      },
+    }),
+  };
+
+  // Signature image vertical mask reveal
+  const imageMaskVariants = {
+    hidden: {
+      clipPath: 'polygon(0 0, 100% 0, 100% 0%, 0 0%)',
+      scale: 1.03,
+    },
+    visible: (custom) => ({
+      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        delay: custom * 0.12 + 0.1,
+        ease: EASE_OUT_EXPO,
+      },
+    }),
+  };
+
+  // Badges fade-in after mask reveal
+  const badgeVariants = {
+    hidden: { opacity: 0 },
+    visible: (custom) => ({
+      opacity: 1,
+      transition: {
+        duration: 0.45,
+        delay: custom * 0.12 + 0.35,
+        ease: EASE_OUT_EXPO,
+      },
+    }),
+  };
+
   return (
-    <section id="services" className="section bg-[var(--color-slate-dark)] relative border-t border-[var(--color-slate-border)]">
-      <Container>
-        <SectionReveal>
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+    <section id="services" className="section relative bg-white border-b border-[#E3E8F0] overflow-hidden">
+      {/* Subtle Project-Themed Background Elements */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        {/* Soft corner atmospheric gradient washes */}
+        <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-gradient-to-br from-[#2764F5]/4 via-[#35C5E8]/3 to-transparent blur-3xl" />
+        <div className="absolute top-1/2 -right-32 h-[500px] w-[500px] rounded-full bg-gradient-to-bl from-[#35C5E8]/4 via-[#2764F5]/3 to-transparent blur-3xl" />
+        <div className="absolute -bottom-32 left-1/3 h-96 w-96 rounded-full bg-[#2764F5]/3 blur-3xl" />
+
+        {/* Oversized Subtle Slanted Quadrilateral (Left Edge) */}
+        <svg
+          className="absolute top-1/4 -left-28 w-[380px] h-[380px] text-[#2764F5]/[0.028] transform -rotate-6"
+          viewBox="0 0 400 400"
+          fill="none"
+        >
+          <path
+            d="M 60 40 L 360 40 L 280 360 L 20 360 Z"
+            stroke="currentColor"
+            strokeWidth="24"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M 120 100 L 340 100 L 280 320 L 80 320 Z"
+            stroke="currentColor"
+            strokeWidth="4"
+            strokeDasharray="12 12"
+          />
+        </svg>
+
+        {/* Oversized Brand Geometric Accent (Bottom Right Edge) */}
+        <svg
+          className="absolute -bottom-24 -right-24 w-[450px] h-[450px] text-[#35C5E8]/[0.035] transform rotate-45"
+          viewBox="0 0 400 400"
+          fill="none"
+        >
+          <rect x="60" y="60" width="280" height="280" rx="48" stroke="currentColor" strokeWidth="20" />
+          <rect x="100" y="100" width="200" height="200" rx="36" stroke="currentColor" strokeWidth="2" strokeDasharray="8 8" />
+        </svg>
+      </div>
+
+      <Container className="relative z-10">
+        {/* Section Header with Editorial Text Reveal */}
+        <motion.div
+          initial={reducedMotion ? false : 'hidden'}
+          whileInView={reducedMotion ? undefined : 'visible'}
+          viewport={scrollViewportConfig}
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14"
+        >
+          <motion.div variants={headingVariants}>
             <SectionHeading
-              eyebrow={servicesContent.eyebrow}
-              heading={servicesContent.heading}
-              description={servicesContent.description}
+              eyebrow={servicesSectionContent.eyebrow}
+              heading={servicesSectionContent.heading}
+              description={servicesSectionContent.description}
               align="left"
+              theme="light"
             />
+          </motion.div>
+          <motion.div variants={linkVariants} className="self-start md:self-end pb-1">
             <Link
               to="/services"
-              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-accent-soft)] hover:text-white transition-colors self-start md:self-end pb-2 group"
+              className="inline-flex items-center gap-2 text-sm font-bold text-[#2764F5] hover:text-[#1E52D0] transition-colors group"
             >
-              <span>Explore all studio capabilities</span>
-              <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+              <span>Explore all services</span>
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
             </Link>
-          </div>
-        </SectionReveal>
+          </motion.div>
+        </motion.div>
 
+        {/* 5-Service Grid with Staggered Cascading Reveal */}
         <motion.div
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2"
-          variants={reducedMotion ? undefined : staggerContainer}
-          initial={reducedMotion ? undefined : 'hidden'}
+          initial={reducedMotion ? false : 'hidden'}
           whileInView={reducedMotion ? undefined : 'visible'}
-          viewport={scrollViewport}
+          viewport={scrollViewportConfig}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8"
         >
-          {servicesContent.items.map((service) => {
+          {coreStudioServices.map((service, idx) => {
             const Icon = service.icon;
-            const targetUrl = `/services/${service.slug}`;
+            const previewImg = previewImages[service.imageKey];
+
+            // Layout mapping: first 3 cards span 2 cols on lg. Last 2 cards span 3 cols.
+            const colSpanClass =
+              idx < 3
+                ? 'lg:col-span-2'
+                : 'lg:col-span-3 md:col-span-1 lg:max-w-none';
 
             return (
               <motion.div
-                key={service.title}
-                variants={reducedMotion ? undefined : staggerChild}
-                className="relative"
+                key={service.slug}
+                custom={idx}
+                variants={reducedMotion ? undefined : cardVariants}
+                className={`${colSpanClass} flex flex-col`}
               >
-                <Link
-                  to={targetUrl}
-                  className="group relative flex flex-col justify-between gap-8 p-8 sm:p-10 rounded-2xl bg-[var(--color-slate-card)] border border-[var(--color-slate-border)] hover:border-[var(--color-accent)]/60 transition-all duration-300 hover:shadow-[var(--shadow-lift)] h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-soft)]"
-                  aria-label={`Explore ${service.title}`}
-                >
-                  {/* Top Bar with Number and Icon */}
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-3xl sm:text-4xl font-bold text-[var(--color-subtle-gray)]/40 group-hover:text-[var(--color-accent-soft)] transition-colors">
-                      {service.number}
-                    </span>
+                <article className="group flex flex-col h-full rounded-2xl bg-[#FFFFFF] border border-[#E3E8F0] hover:border-[#2764F5]/50 transition-all duration-300 shadow-xs hover:shadow-xl hover:-translate-y-1 overflow-hidden">
+                  <Link
+                    to={service.link}
+                    className="flex flex-col flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2764F5] rounded-2xl"
+                    aria-label={`Learn more about ${service.title}`}
+                  >
+                    {/* Visual Real Preview with signature vertical mask reveal */}
+                    <div
+                      className={`relative w-full overflow-hidden bg-[#101B2D] ${
+                        idx >= 3 ? 'aspect-[16/9]' : 'aspect-[16/10]'
+                      }`}
+                    >
+                      <motion.div
+                        custom={idx}
+                        variants={reducedMotion ? undefined : imageMaskVariants}
+                        className="h-full w-full"
+                      >
+                        <img
+                          src={previewImg}
+                          alt={`${service.title} preview showcase`}
+                          className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-102"
+                          loading="lazy"
+                        />
+                      </motion.div>
 
-                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-obsidian)] border border-[var(--color-slate-border)] text-[var(--color-accent-soft)] group-hover:bg-[var(--color-accent-strong)] group-hover:text-white group-hover:border-[var(--color-accent-strong)] transition-all duration-300">
-                      <Icon size={22} aria-hidden="true" />
-                    </span>
-                  </div>
+                      {/* Category Badge overlay */}
+                      <motion.div
+                        custom={idx}
+                        variants={reducedMotion ? undefined : badgeVariants}
+                        className="absolute top-4 left-4"
+                      >
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-xs text-[11px] font-bold uppercase tracking-wider text-[#101B2D] shadow-xs">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#2764F5]" />
+                          {service.badge}
+                        </span>
+                      </motion.div>
 
-                  {/* Content Area */}
-                  <div className="flex flex-col gap-3">
-                    <span className="text-[11px] font-semibold tracking-widest uppercase text-[var(--color-accent-soft)]">
-                      {service.category}
-                    </span>
-                    <h3 className="text-2xl font-bold text-[var(--color-soft-white)] transition-colors group-hover:text-white">
-                      {service.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-[var(--color-subtle-gray)]">
-                      {service.shortDescription}
-                    </p>
-                  </div>
-
-                  {/* Bottom Action Indicator */}
-                  <div className="pt-4 border-t border-[var(--color-slate-border)]/60 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-subtle-gray)] group-hover:text-[var(--color-accent-soft)] transition-colors">
-                    <span>View Specifications</span>
-                    <div className="flex items-center gap-1">
-                      <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      {/* Number Tag */}
+                      <motion.div
+                        custom={idx}
+                        variants={reducedMotion ? undefined : badgeVariants}
+                        className="absolute top-4 right-4"
+                      >
+                        <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-[#101B2D]/85 backdrop-blur-xs text-xs font-mono font-bold text-white">
+                          {service.number}
+                        </span>
+                      </motion.div>
                     </div>
-                  </div>
-                </Link>
+
+                    {/* Card Content */}
+                    <div className="flex flex-col flex-1 justify-between p-6 sm:p-7 gap-6">
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-center gap-2.5">
+                          <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[#2764F5]/10 text-[#2764F5] shrink-0">
+                            <Icon size={18} aria-hidden="true" />
+                          </span>
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-[#687386]">
+                            {service.category}
+                          </span>
+                        </div>
+
+                        <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#141B2A] group-hover:text-[#2764F5] transition-colors leading-snug">
+                          {service.title}
+                        </h3>
+
+                        <p className="text-sm leading-relaxed text-[#687386]">
+                          {service.shortDescription}
+                        </p>
+
+                        {/* Capabilities Bullet points */}
+                        <ul className="flex flex-col gap-2 pt-2">
+                          {service.capabilities.map((cap) => (
+                            <li key={cap} className="flex items-start gap-2 text-xs font-medium text-[#141B2A]">
+                              <span className="h-1.5 w-1.5 rounded-full bg-[#35C5E8] shrink-0 mt-1.5" />
+                              <span className="leading-snug">{cap}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Action Link Footer with directional arrow hover interaction */}
+                      <div className="pt-4 border-t border-[#E3E8F0] flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#2764F5] group-hover:text-[#1E52D0]">
+                        <span>Explore Service</span>
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2764F5]/10 group-hover:bg-[#2764F5] group-hover:text-white transition-all transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                          <ArrowUpRight size={14} />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </article>
               </motion.div>
             );
           })}

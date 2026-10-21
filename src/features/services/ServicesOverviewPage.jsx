@@ -13,7 +13,7 @@ export function ServicesOverviewPage() {
         <title>Studio Services &amp; Capabilities — {siteConfig.name}</title>
         <meta
           name="description"
-          content="Explore NEXZIVO's services: website development, UI/UX design, mobile applications, final-year project guidance, and custom software solutions."
+          content="Explore NEXZIVO's 5 core studio services: website design & development, mobile app development, UI/UX design, poster & graphic design, and custom software solutions."
         />
       </Helmet>
 
@@ -37,7 +37,7 @@ export function ServicesOverviewPage() {
               Digital services for ideas with a purpose.
             </h1>
             <p className="text-lg sm:text-xl text-[#8B95A5] leading-relaxed">
-              From responsive websites and thoughtful product design to mobile apps, academic project guidance, and custom software, we help turn needs into useful digital solutions.
+              From responsive websites and intuitive mobile apps to polished UI/UX systems, expressive poster design, and custom business software, we build tailored digital solutions for your ideas.
             </p>
           </div>
         </Container>

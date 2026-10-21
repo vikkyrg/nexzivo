@@ -6,8 +6,8 @@ const alignClasses = {
 
 /**
  * NEXZIVO Studio SectionHeading.
- * Editorial typography hierarchy with a restrained eyebrow, solid headline,
- * and balanced subtitle. No glow, no gradient text, no pulsing indicators.
+ * Editorial typography hierarchy with clean styling, restrained eyebrow,
+ * and high-contrast readable text.
  */
 export function SectionHeading({
   eyebrow,
@@ -16,22 +16,41 @@ export function SectionHeading({
   align = 'left',
   as: Tag = 'h2',
   className = '',
+  theme = 'light', // 'light' or 'dark'
 }) {
   const alignClass = alignClasses[align] || alignClasses.left;
+  const isDark = theme === 'dark';
 
   return (
-    <div className={`flex flex-col gap-4 ${alignClass} ${className}`}>
+    <div className={`flex flex-col gap-3 ${alignClass} ${className}`}>
       {eyebrow && (
-        <span className="inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent-soft)]">
-          <span className="h-px w-6 bg-[var(--color-accent)]/60" aria-hidden="true" />
+        <span
+          className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] ${
+            isDark ? 'text-[#35C5E8]' : 'text-[#2764F5]'
+          }`}
+        >
+          <span
+            className={`h-0.5 w-5 rounded-full ${
+              isDark ? 'bg-[#35C5E8]' : 'bg-[#2764F5]'
+            }`}
+            aria-hidden="true"
+          />
           <span>{eyebrow}</span>
         </span>
       )}
-      <Tag className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl text-[var(--color-soft-white)]">
+      <Tag
+        className={`text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl ${
+          isDark ? 'text-white' : 'text-[#141B2A]'
+        }`}
+      >
         {heading}
       </Tag>
       {description && (
-        <p className="max-w-2xl text-base leading-relaxed sm:text-lg text-[var(--color-subtle-gray)]">
+        <p
+          className={`max-w-2xl text-base leading-relaxed sm:text-lg ${
+            isDark ? 'text-[#CBD5E1]' : 'text-[#687386]'
+          }`}
+        >
           {description}
         </p>
       )}

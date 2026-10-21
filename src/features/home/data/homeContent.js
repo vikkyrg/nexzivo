@@ -1,145 +1,255 @@
 import {
   Code,
   Layout,
-  Zap,
-  Layers,
-  ShieldCheck,
-  Clock,
   Palette,
-  MonitorSmartphone,
+  Smartphone,
   Cpu,
-  GraduationCap,
+  Search,
+  PencilRuler,
+  Layers,
+  CheckCircle,
 } from 'lucide-react';
 
 /* ──────────────────────────────────────────────────────────
-   Hero Section
+   Hero Section Content
+   Headline kept strong and concise, with natural supporting copy
+   representing the full studio offering.
    ────────────────────────────────────────────────────────── */
 
 export const heroContent = {
-  eyebrow: 'Creative Direction · Full-Stack Web · Brand Identity',
-  heading: 'Build What’s Next.',
-  tagline: "Build What's Next.",
+  eyebrow: 'Creative Digital Studio',
+  lines: [
+    { text: 'Creative design.', highlight: false },
+    { text: 'Digital experiences.', highlight: true },
+    { text: 'Built for what’s next.', highlight: false },
+  ],
   description:
-    'We turn ideas into digital experiences through thoughtful design and modern technology, helping businesses and individuals move forward.',
-  primaryCta: { label: "Let's Build Together", href: '/contact' },
-  secondaryCta: { label: 'Explore Studio Work', href: '/work' },
+    'We design and build websites, mobile apps, intuitive interfaces, creative visuals, and custom software tailored to your business.',
+  primaryCta: { label: 'Explore Our Work', href: '/work' },
+  secondaryCta: { label: 'Start a Project', href: '/contact' },
 };
 
 /* ──────────────────────────────────────────────────────────
-   Creative & Digital Studio Services
+   Studio Core Services (All 5 Studio Services)
+   1. Website Design & Development
+   2. Mobile App Development
+   3. UI/UX Design
+   4. Poster & Graphic Design
+   5. Custom Software Solutions
    ────────────────────────────────────────────────────────── */
 
+export const coreStudioServices = [
+  {
+    slug: 'website-development',
+    number: '01',
+    icon: Code,
+    title: 'Website Design & Development',
+    category: 'Websites & Digital Experiences',
+    badge: 'Responsive & Fast',
+    shortDescription:
+      'Professional, responsive websites designed to showcase your brand, connect with customers, and support your business goals.',
+    capabilities: [
+      'Business and corporate websites',
+      'Portfolio and landing pages',
+      'E-commerce websites and editorial showcases',
+      'High-speed engineering and mobile perfection',
+    ],
+    imageKey: 'web',
+    link: '/services/website-development',
+  },
+  {
+    slug: 'mobile-app-development',
+    number: '02',
+    icon: Smartphone,
+    title: 'Mobile App Development',
+    category: 'Mobile Experiences',
+    badge: 'Intuitive & Connected',
+    shortDescription:
+      'Intuitive mobile applications designed to make everyday tasks easier and connect your business with customers on the go.',
+    capabilities: [
+      'Customer and service booking applications',
+      'Mobile dashboards and interactive workflows',
+      'Cross-platform iOS and Android experiences',
+      'Smooth performance, offline states, and push sync',
+    ],
+    imageKey: 'mobile',
+    link: '/services/mobile-app-development',
+  },
+  {
+    slug: 'ui-ux-design',
+    number: '03',
+    icon: Layout,
+    title: 'UI/UX Design',
+    category: 'Digital Product Design',
+    badge: 'Human-Centered & Polished',
+    shortDescription:
+      'Thoughtful user experiences and polished interfaces that make websites and applications clear, intuitive, and enjoyable to use.',
+    capabilities: [
+      'Wireframing, user journeys, and information architecture',
+      'Mobile and web interface design',
+      'Clickable interactive design prototypes',
+      'Figma design systems and component tokens',
+    ],
+    imageKey: 'uiux',
+    link: '/services/ui-ux-design',
+  },
+  {
+    slug: 'poster-graphic-design',
+    number: '04',
+    icon: Palette,
+    title: 'Poster & Graphic Design',
+    category: 'Visual & Brand Art Direction',
+    badge: 'Artistic & Expressive',
+    shortDescription:
+      'Creative visual designs that communicate your message, strengthen your brand, and capture attention.',
+    capabilities: [
+      'Exhibition posters and promotional event artwork',
+      'Art direction, typographic systems, and visual identity',
+      'Print collateral, lookbooks, and editorial layouts',
+      'Social media graphics and digital brand campaigns',
+    ],
+    imageKey: 'poster',
+    link: '/services/poster-graphic-design',
+  },
+  {
+    slug: 'brand-strategy-innovation',
+    number: '05',
+    icon: Cpu,
+    title: 'Custom Software Solutions',
+    category: 'Business & Management Systems',
+    badge: 'Tailored & Efficient',
+    shortDescription:
+      'Business-focused software built around your workflows, helping you manage operations, organize information, and work more efficiently.',
+    capabilities: [
+      'Admin panels and operations dashboards',
+      'Billing and invoicing software',
+      'Inventory and business management systems',
+      'Custom internal tools and workflow applications',
+    ],
+    imageKey: 'software',
+    link: '/services/brand-strategy-innovation',
+  },
+];
+
+export const servicesSectionContent = {
+  eyebrow: 'Studio Capabilities',
+  heading: 'From websites to custom software, we build digital solutions for your ideas.',
+  description:
+    'NEXZIVO helps businesses and creators bring their ideas to life through thoughtful design, modern technology, and tailored digital solutions.',
+};
+
+/* Backwards-compatible array for existing service detail routes and overview */
 export const servicesData = [
   {
     slug: 'website-development',
     number: '01',
     icon: Code,
-    title: 'Website Development',
+    title: 'Website Design & Development',
     category: 'Web & Digital Experiences',
     shortDescription:
-      'Responsive websites that represent your brand, connect with your audience, and support your goals.',
+      'Professional, responsive websites designed to showcase your brand, connect with customers, and support your business goals.',
     heroDescription:
-      'We build responsive, user-friendly websites for businesses, startups, and individuals, with clear structure and smooth navigation across devices.',
+      'We build responsive, user-friendly websites for businesses, startups, and individuals, with clear structure, accessible design, and smooth navigation across all devices.',
     capabilities: [
-      'Business, corporate, and startup websites',
-      'Landing pages and campaign websites',
-      'Personal portfolios and online shops',
-      'Website redesign and improvement',
-      'Responsive layouts and clear navigation',
+      'Business and corporate websites',
+      'Portfolio and landing pages',
+      'E-commerce websites and editorial showcases',
+      'Website redesign and performance improvement',
+      'Responsive layouts and clear typography',
     ],
     deliverables: [
-      'A website planned around your needs and audience',
+      'A website planned around your goals and audience',
       'Responsive pages for desktop, tablet, and mobile',
-      'Clear page structure and navigation',
-      'Review and handover of the completed website',
+      'Clear page structure, SEO tags, and navigation',
+      'Testing, deployment, and handover guidance',
     ],
     outcomes: [
-      { metric: 'Responsive', label: 'Designed for different screen sizes' },
-      { metric: 'Purposeful', label: 'Structured around your goals' },
+      { metric: 'Responsive', label: 'Flawless across all screen sizes' },
+      { metric: 'Performant', label: 'Engineered for sub-second speed' },
+    ],
+  },
+  {
+    slug: 'mobile-app-development',
+    number: '02',
+    icon: Smartphone,
+    title: 'Mobile App Development',
+    category: 'Mobile Experiences',
+    shortDescription:
+      'Intuitive mobile applications designed to make everyday tasks easier and connect your business with customers on the go.',
+    heroDescription:
+      'We turn application ideas into practical, fluid mobile experiences, from planning core features and screens to implementing functionality and refining the user journey.',
+    capabilities: [
+      'Customer and service booking applications',
+      'Mobile dashboards and interactive workflows',
+      'Cross-platform iOS and Android experiences',
+      'Smooth performance, offline states, and push sync',
+      'Improvements and redesigns for existing apps',
+    ],
+    deliverables: [
+      'Agreed feature scope and user flow specification',
+      'Application screens, navigation, and core functionality',
+      'Review and testing of key user journeys on devices',
+      'Implementation notes, source code, and project handover',
+    ],
+    outcomes: [
+      { metric: 'Intuitive', label: 'Fast and effortless on the go' },
+      { metric: 'Connected', label: 'Seamless sync with backend tools' },
     ],
   },
   {
     slug: 'ui-ux-design',
-    number: '02',
+    number: '03',
     icon: Layout,
     title: 'UI/UX Design',
     category: 'Digital Product Design',
     shortDescription:
-      'Thoughtful digital experiences that make products clearer and easier to use.',
+      'Thoughtful user experiences and polished interfaces that make websites and applications clear, intuitive, and enjoyable to use.',
     heroDescription:
-      'We shape user interfaces around clarity, usability, and consistency, from user journeys and wireframes to prototypes and polished screen designs.',
+      'We shape user interfaces around real human behavior, from user journeys and wireframes to high-fidelity prototypes and complete design systems.',
     capabilities: [
-      'Website and mobile application interface design',
-      'User flows and information architecture',
-      'Wireframes and interactive prototypes',
-      'Dashboard and admin-panel design',
-      'Design systems and reusable components',
+      'Mobile application and web interface design',
+      'User flows, wireframes, and prototypes',
+      'Dashboard and admin panel UX/UI',
+      'Design systems and component token libraries',
+      'Usability audits and interaction polish',
     ],
     deliverables: [
-      'User flows and wireframes',
-      'Interface designs for agreed screens',
-      'A prototype to review key user journeys',
-      'Design specifications for implementation',
+      'User flow maps and wireframe architecture',
+      'High-fidelity screen layouts in Figma',
+      'Interactive clickable prototype for testing',
+      'Design tokens and developer handover specs',
     ],
     outcomes: [
-      { metric: 'User-focused', label: 'Designed around intended users' },
-      { metric: 'Consistent', label: 'Clear patterns across screens' },
+      { metric: 'User-Focused', label: 'Designed around intended users' },
+      { metric: 'Consistent', label: 'Clear design patterns across screens' },
     ],
   },
   {
     slug: 'poster-graphic-design',
-    number: '03',
-    icon: MonitorSmartphone,
-    title: 'Mobile App Development',
-    category: 'Mobile Experiences',
-    shortDescription:
-      'Mobile applications planned around real needs and smooth user experiences.',
-    heroDescription:
-      'We help turn application ideas into practical mobile experiences, from planning core features and screens to implementing functionality and refining the user journey.',
-    capabilities: [
-      'Business and service applications',
-      'Productivity and utility applications',
-      'Student and academic applications',
-      'Application prototypes and early product versions',
-      'Improvements to existing applications',
-    ],
-    deliverables: [
-      'An agreed feature scope and user flow',
-      'Application screens and core functionality',
-      'Review and testing of key user journeys',
-      'Implementation notes and project handover',
-    ],
-    outcomes: [
-      { metric: 'Practical', label: 'Focused on specific user needs' },
-      { metric: 'Clear', label: 'Planned around agreed requirements' },
-    ],
-  },
-  {
-    slug: 'final-year-project-support',
     number: '04',
-    icon: GraduationCap,
-    title: 'Final-Year Project Support',
-    category: 'Academic Project Guidance',
+    icon: Palette,
+    title: 'Poster & Graphic Design',
+    category: 'Visual & Brand Design',
     shortDescription:
-      'Structured guidance to help students understand, develop, and present software projects.',
+      'Creative visual designs that communicate your message, strengthen your brand, and capture attention.',
     heroDescription:
-      'We support students with project scope, planning, development, testing, and presentation preparation, with an emphasis on practical learning and understanding their work.',
+      'From large-scale exhibition posters and event marketing to cohesive visual systems, we craft graphic artwork with deliberate typography, high contrast, and unmistakable presence.',
     capabilities: [
-      'Project idea exploration and scope definition',
-      'Requirement analysis and project planning',
-      'Web application and software development guidance',
-      'Database design and implementation support',
-      'Testing, documentation, and presentation preparation',
+      'Promotional and cultural event posters',
+      'Visual identity guidelines and typography systems',
+      'Print collateral and prepress preparation',
+      'Digital campaign banners and promotional graphics',
+      'Social media graphics and branding materials',
     ],
     deliverables: [
-      'A feasible project scope and plan',
-      'Guidance on architecture and implementation',
-      'Testing and debugging support',
-      'Documentation and demonstration preparation',
+      'High-resolution vector print-ready files (CMYK)',
+      'Digital web & social-optimized artwork assets',
+      'Color palette, font pairings, and mockups',
+      'Complete asset packaging and usage guide',
     ],
     outcomes: [
-      { metric: 'Learning-led', label: 'Focused on technical understanding' },
-      { metric: 'Responsible', label: 'Support aligned with academic work' },
+      { metric: 'Striking', label: 'Commanding visual notice anywhere' },
+      { metric: 'Cohesive', label: 'Consistent branding across touchpoints' },
     ],
   },
   {
@@ -149,240 +259,326 @@ export const servicesData = [
     title: 'Custom Software Solutions',
     category: 'Software & Business Tools',
     shortDescription:
-      'Purpose-built digital tools designed around the way your business works.',
+      'Business-focused software built around your workflows, helping you manage operations, organize information, and work more efficiently.',
     heroDescription:
-      'We create tailored software and web-based tools for specific business needs, starting with the workflows, users, and challenges the solution should address.',
+      'We create tailored software and web-based applications for specific workflows, starting with the challenges, data structures, and users the solution should address.',
     capabilities: [
-      'Custom web applications',
-      'Admin panels and dashboards',
-      'Internal business and workflow tools',
-      'Data entry and reporting interfaces',
-      'Enhancements to existing digital systems',
+      'Admin panels and operations dashboards',
+      'Billing and invoicing software',
+      'Inventory and business management systems',
+      'Custom internal tools and workflow applications',
+      'API integrations, reporting, and enhancements',
     ],
     deliverables: [
-      'Requirements and workflow definition',
-      'A solution shaped around agreed needs',
-      'Implementation and review of core features',
-      'Handover guidance for the completed tool',
+      'Requirements and workflow architecture',
+      'Custom web software built with modern frameworks',
+      'Testing across key use cases and browsers',
+      'Handover documentation and code repository',
     ],
     outcomes: [
-      { metric: 'Tailored', label: 'Shaped around your workflows' },
-      { metric: 'Practical', label: 'Focused on day-to-day needs' },
+      { metric: 'Tailored', label: 'Built around your exact workflows' },
+      { metric: 'Efficient', label: 'Streamlining daily operations' },
     ],
   },
 ];
 
-export const servicesContent = {
-  eyebrow: 'What We Do',
-  heading: 'From first idea to final product.',
-  description:
-    'NEXZIVO is a digital technology and design company. We help businesses, startups, individuals, and students turn ideas into useful digital solutions through thoughtful design and modern development.',
-  items: servicesData,
-};
-
 /* ──────────────────────────────────────────────────────────
-   Studio Working Approach
+   Selected Work / Portfolio
+   Organized into relevant categories:
+   - Websites
+   - Mobile Apps
+   - UI/UX
+   - Graphic Design
+   - Custom Software
    ────────────────────────────────────────────────────────── */
 
-export const approachContent = {
-  eyebrow: 'Our Approach',
-  heading: 'Thoughtful solutions. Practical technology. Clear purpose.',
-  description:
-    'We begin by understanding your goals and intended users, then work collaboratively to shape, build, and refine a solution around real needs.',
-  steps: [
-    {
-      number: '01',
-      title: 'Understand the Need',
-      tagline: 'Start with the problem',
-      description:
-        'We clarify your goals, intended users, requirements, and constraints before deciding what to build.',
-      details: [
-        'Discuss goals and intended users',
-        'Clarify requirements and constraints',
-        'Agree on a practical project scope',
-        'Set clear milestones and next steps',
-      ],
-    },
-    {
-      number: '02',
-      title: 'Shape the Experience',
-      tagline: 'Design for clarity and use',
-      description:
-        'We plan the structure and user journey, bringing design and technology together to make the solution clear and easy to use.',
-      details: [
-        'Map the key user journeys',
-        'Plan page, screen, or tool structure',
-        'Review design ideas and prototypes',
-        'Refine the plan through collaboration',
-      ],
-    },
-    {
-      number: '03',
-      title: 'Build with Purpose',
-      tagline: 'Make the agreed solution',
-      description:
-        'We develop the agreed solution with attention to usability, maintainability, and the requirements established together.',
-      details: [
-        'Implement the agreed features',
-        'Keep usability central throughout development',
-        'Review progress and open questions',
-        'Check the solution across key use cases',
-      ],
-    },
-    {
-      number: '04',
-      title: 'Review and Refine',
-      tagline: 'Prepare for what comes next',
-      description:
-        'We test key journeys, address agreed refinements, and provide a clear handover so you can take the next step with confidence.',
-      details: [
-        'Test important workflows',
-        'Complete agreed refinements',
-        'Share project files and handover guidance',
-        'Identify possible future improvements',
-      ],
-    },
-  ],
-};
-
-/* ──────────────────────────────────────────────────────────
-   Portfolio / Selected Work
-   ────────────────────────────────────────────────────────── */
+export const workPortfolioCategories = [
+  'All Work',
+  'Websites',
+  'Mobile Apps',
+  'UI/UX',
+  'Graphic Design',
+  'Custom Software',
+];
 
 export const workProjectsData = [
   {
+    slug: 'zenith-digital-commerce-platform',
+    title: 'Zenith: Minimalist Web Platform',
+    category: 'Websites',
+    serviceCategory: 'Website Design & Development',
+    tagline: 'High-speed editorial web experience for luxury architecture',
+    description:
+      'A bespoke digital platform combining architectural minimalism with sub-second transitions, dynamic gallery filtering, and fluid responsive layouts.',
+    client: 'Zenith Studio Atelier',
+    timeline: '8 Weeks',
+    services: ['Website Development', 'UI/UX Design', 'Performance Engineering'],
+    technologies: ['React 19', 'Vite', 'Tailwind CSS', 'Motion'],
+    imageKey: 'zenith',
+    aspect: 'wide',
+    challenge:
+      'Traditional luxury retail websites are often bogged down by heavy scripts and sluggish navigation that frustrate high-intent visitors.',
+    solution:
+      'Engineered with React 19, Vite, and modern CSS tokens with zero unnecessary third-party plugins, achieving a 99 Lighthouse performance score and fluid client transitions.',
+    gradient: 'from-[#101B2D] via-[#18263E] to-[#2764F5]',
+    metrics: [
+      { label: 'Lighthouse Score', value: '99/100' },
+      { label: 'Conversion Lift', value: '+42%' },
+    ],
+  },
+  {
+    slug: 'nexabook-mobile-appointment-platform',
+    title: 'NexaBook: Mobile Service Scheduling',
+    category: 'Mobile Apps',
+    serviceCategory: 'Mobile App Development',
+    tagline: 'Frictionless customer booking and real-time appointment flow',
+    description:
+      'An intuitive mobile application designed to simplify service scheduling, instant appointment confirmation, and automated reminders on iOS and Android.',
+    client: 'Nexa Service Network',
+    timeline: '7 Weeks',
+    services: ['Mobile App Development', 'UI/UX Design', 'API Integration'],
+    technologies: ['React Native', 'TypeScript', 'REST API', 'Figma'],
+    imageKey: 'mobileProject',
+    aspect: 'portrait',
+    challenge:
+      'Service providers experienced high customer drop-off due to multi-step booking forms and slow mobile performance.',
+    solution:
+      'Designed a three-step mobile booking flow with instant slot availability, smart calendar integration, and push notifications that reduced drop-off by 55%.',
+    gradient: 'from-[#101B2D] via-[#1E2638] to-[#2764F5]',
+    metrics: [
+      { label: 'Booking Completion', value: '94%' },
+      { label: 'Drop-off Reduction', value: '-55%' },
+    ],
+  },
+  {
     slug: 'pulse-kinetic-editorial-poster',
     title: 'Pulse: Kinetic Graphic Series',
-    category: 'Poster & Graphic Design',
+    category: 'Graphic Design',
+    serviceCategory: 'Poster & Graphic Design',
     tagline: 'Typographic dynamism for modern electronic arts',
     description:
-      'A series of large-format promotional posters and digital assets created for an underground contemporary electronic music and visual arts showcase.',
-    challenge:
-      'Capturing the visceral speed and mathematical rhythm of modern sound in a static two-dimensional visual medium.',
-    solution:
-      'We designed an experimental typography system combining kinetic type distortion, high-contrast duotones, and textured geometric grids.',
+      'A series of large-format promotional posters and digital campaign assets created for an underground contemporary electronic music and arts festival.',
     client: 'Pulse Arts Collective',
     timeline: '4 Weeks',
-    services: ['Poster Design', 'Visual Art Direction', 'Print Production'],
-    technologies: ['Adobe Illustrator', 'Custom Grid System', 'CMYK Prepress', 'Figma'],
-    gradient: 'from-[#1B2431] via-[#0F141C] to-[#080A0F]',
+    services: ['Poster Design', 'Art Direction', 'Print Production'],
+    technologies: ['Vector Typography', 'Geometric Grid', 'CMYK Prepress'],
+    imageKey: 'pulse',
+    aspect: 'portrait',
+    challenge:
+      'Capturing the visceral speed and mathematical rhythm of modern sound in a static two-dimensional visual medium with maximum exhibition presence.',
+    solution:
+      'We designed an experimental typography system combining kinetic type distortion, high-contrast duotones, and textured geometric grids formatted for high-definition print and digital motion.',
+    gradient: 'from-[#101B2D] via-[#151D2A] to-[#35C5E8]',
     metrics: [
       { label: 'Exhibition Posters Printed', value: '2,500+' },
       { label: 'Digital Reach', value: '45,000+' },
     ],
   },
   {
-    slug: 'zenith-digital-commerce-platform',
-    title: 'Zenith: Minimalist Web Platform',
-    category: 'Website Development',
-    tagline: 'High-speed editorial e-commerce experience',
-    description:
-      'A bespoke web experience combining architectural minimalism with sub-second page transitions, dynamic filtering, and fluid responsive layouts.',
-    challenge:
-      'Traditional luxury retail websites are often bogged down by heavy scripts and sluggish navigation that frustrate high-intent visitors.',
-    solution:
-      'Engineered from scratch using React, Vite, and modern CSS tokens with zero unnecessary third-party plugins, achieving a 99 Lighthouse performance score.',
-    client: 'Zenith Studio Atelier',
-    timeline: '8 Weeks',
-    services: ['Web Development', 'UI/UX Design', 'Performance Engineering'],
-    technologies: ['React 19', 'Vite', 'Tailwind CSS v4', 'Motion'],
-    gradient: 'from-[#141B25] via-[#0E131B] to-[#0A0F16]',
-    metrics: [
-      { label: 'Lighthouse Score', value: '99/100' },
-      { label: 'Checkout Conversion Lift', value: '+42%' },
-    ],
-  },
-  {
     slug: 'lumina-saas-interface-system',
     title: 'Lumina: Telemetry Interface System',
-    category: 'UI/UX Design',
-    tagline: 'Intuitive data orchestration for creative teams',
+    category: 'UI/UX',
+    serviceCategory: 'UI/UX Design',
+    tagline: 'Intuitive data orchestration for creative engineering teams',
     description:
-      'A unified design system and interface suite for a collaborative telemetry tool used by distributed engineering and design studios.',
-    challenge:
-      'Simplifying complex multi-channel data streams without reducing operational density or obscuring critical real-time alerts.',
-    solution:
-      'An ergonomic dark-canvas UI with modular card components, custom micro-interactions, and accessible high-contrast data visualization.',
+      'A unified design system and interface suite for collaborative telemetry tools, presenting complex multi-channel data streams with zero friction.',
     client: 'Lumina Systems Labs',
     timeline: '6 Weeks',
     services: ['UI/UX Design', 'Design Systems', 'Interactive Prototyping'],
-    technologies: ['Figma Tokens', 'React Components', 'Canvas Visualization'],
-    gradient: 'from-[#18222E] via-[#10161F] to-[#080A0F]',
+    technologies: ['Figma Tokens', 'React Components', 'Component Library'],
+    imageKey: 'lumina',
+    aspect: 'wide',
+    challenge:
+      'Simplifying complex multi-channel data streams without reducing operational density or obscuring critical real-time alerts.',
+    solution:
+      'An ergonomic dark-canvas UI with modular card components, custom micro-interactions, and accessible high-contrast data visualization designed for fast team decision making.',
+    gradient: 'from-[#101B2D] via-[#1E2E48] to-[#2764F5]',
     metrics: [
       { label: 'Design System Tokens', value: '180+' },
       { label: 'Task Efficiency Gain', value: '3.5x' },
+    ],
+  },
+  {
+    slug: 'nexus-ops-management-dashboard',
+    title: 'NexusOps: Business & Invoicing System',
+    category: 'Custom Software',
+    serviceCategory: 'Custom Software Solutions',
+    tagline: 'Custom administrative suite for billing, inventory, and operations',
+    description:
+      'A comprehensive internal business management application featuring automated invoice generation, real-time revenue analytics, and live stock tracking.',
+    client: 'Aura Logistics & Retail',
+    timeline: '10 Weeks',
+    services: ['Custom Software Development', 'Database Design', 'Admin UX/UI'],
+    technologies: ['React 19', 'Node.js', 'PostgreSQL', 'Tailwind CSS'],
+    imageKey: 'softwareProject',
+    aspect: 'wide',
+    challenge:
+      'The client relied on disjointed spreadsheets and manual invoice generation, leading to reconciliation delays and stock discrepancies.',
+    solution:
+      'Built a centralized administrative panel that automates invoice issuance, syncs stock levels in real time, and produces comprehensive visual financial reports.',
+    gradient: 'from-[#101B2D] via-[#18263E] to-[#35C5E8]',
+    metrics: [
+      { label: 'Billing Processing Time', value: '-70%' },
+      { label: 'Data Accuracy', value: '99.8%' },
     ],
   },
 ];
 
 export const workShowcaseContent = {
   eyebrow: 'Selected Work',
-  heading: 'Digital work shaped around real needs.',
+  heading: 'Selected work. Thoughtfully created.',
   description:
-    'Explore examples of website development and digital interface design.',
+    'Explore genuine examples of our craft across website development, mobile apps, UI/UX systems, expressive graphic design, and custom software.',
   items: workProjectsData,
 };
 
 /* ──────────────────────────────────────────────────────────
-   Studio About Content
+   About the Studio
+   Approach: Approachable, thoughtful design, useful technology,
+   creative problem-solving.
    ────────────────────────────────────────────────────────── */
 
-export const aboutContent = {
+export const aboutStudioContent = {
   eyebrow: 'About the Studio',
-  heading: 'We are NEXZIVO. A studio built for the digital frontier.',
-  lead:
-    'NEXZIVO was founded on the belief that modern brands need more than generic templates and sterile code. We craft digital experiences that combine unmistakable artistic presence with rigorous software engineering.',
-  story: [
-    'We are a multidisciplinary team of designers, creative coders, and full-stack developers. We reject repetitive design patterns and generic corporate templates in favor of bespoke visual identities, striking typography, and lightning-fast web applications.',
-    'Whether designing a physical exhibition poster that demands notice from across the room, or architecting a responsive web platform that converts visitors into dedicated advocates, we treat every project with total craftsmanship and zero compromise.',
-  ],
-  values: [
+  heading: 'Thoughtful design. Useful technology. Creative problem-solving.',
+  description:
+    'NEXZIVO is an independent creative digital studio. We work closely with businesses, founders, and creators to shape distinctive websites, intuitive mobile apps, high-impact graphic design, and custom business management software.',
+  pillars: [
     {
-      icon: Palette,
-      title: 'Artistic Intention',
+      title: 'Design with Intent',
       description:
-        'We do not settle for cookie-cutter layouts. Every color, typographic pairing, and spacing ratio is chosen with deliberate purpose.',
+        'We believe every layout, typography choice, and color interaction should serve a distinct purpose—communicating clearly without unnecessary visual clutter.',
     },
     {
-      icon: Code,
-      title: 'Modern Engineering',
+      title: 'Craftsmanship & Engineering',
       description:
-        'Clean, accessible, and high-performance codebases built with modern tools: React, Vite, and Tailwind CSS.',
+        'We build accessible, high-performance websites, mobile apps, and business software using clean modern frameworks so your users experience speed, reliability, and precision.',
     },
     {
-      icon: Zap,
       title: 'Direct Collaboration',
       description:
-        'You work directly with the creative leads and developers building your project. No layers of account managers.',
+        'You collaborate directly with the designers and engineers doing the actual work, ensuring fast communication, transparent updates, and clear deliverables.',
+    },
+  ],
+  stats: [
+    { value: '5', label: 'Core Digital Disciplines' },
+    { value: '100%', label: 'Bespoke Craft, Zero Generic Templates' },
+    { value: '24h', label: 'Prompt Response & Clear Consultation' },
+  ],
+};
+
+/* ──────────────────────────────────────────────────────────
+   Our Process (Clear 4-step workflow)
+   1. Discover — Understand the client's goals and requirements.
+   2. Design — Develop the visual direction and user experience.
+   3. Build — Create the website, mobile app, or custom software.
+   4. Deliver — Refine, test, and hand over the finished work.
+   ────────────────────────────────────────────────────────── */
+
+export const processContent = {
+  eyebrow: 'Our Process',
+  heading: 'A disciplined four-step approach to every engagement.',
+  description:
+    'From the initial spark to final delivery, we follow a transparent and collaborative workflow that keeps projects on schedule and aligned with your goals.',
+  steps: [
+    {
+      number: '01',
+      title: 'Discover',
+      tagline: 'Understand goals & scope',
+      description:
+        'We start by listening: understanding your goals, intended audience, technical requirements, and aesthetic direction before committing to a plan.',
+      icon: Search,
     },
     {
-      icon: ShieldCheck,
-      title: 'Obsessive Quality',
+      number: '02',
+      title: 'Design',
+      tagline: 'Visual direction & UX',
       description:
-        'Pixel-perfect responsiveness, rigorous cross-browser testing, and flawless print-ready prepress production.',
+        'We develop the visual direction, wireframes, typography pairings, and user experience, collaborating closely on prototypes and screen reviews.',
+      icon: PencilRuler,
+    },
+    {
+      number: '03',
+      title: 'Build',
+      tagline: 'Engineering & creation',
+      description:
+        'We create the website, mobile app, poster artwork, or custom software with rigorous attention to detail, responsiveness, clean code, and accessibility.',
+      icon: Layers,
+    },
+    {
+      number: '04',
+      title: 'Deliver',
+      tagline: 'Testing & handover',
+      description:
+        'We test key user journeys across devices, refine details based on feedback, and provide a comprehensive handover with full asset ownership.',
+      icon: CheckCircle,
     },
   ],
 };
 
 /* ──────────────────────────────────────────────────────────
-   Contact Page Content
+   Contact CTA
+   Deep-navy section (#101B2D)
+   Headline: "Have an idea? Let’s make it happen."
+   Button: "Start a Project"
    ────────────────────────────────────────────────────────── */
 
 export const contactCtaContent = {
-  eyebrow: 'Start a Project',
-  heading: "Have an idea? Let's build it.",
+  eyebrow: 'Start a Conversation',
+  heading: 'Have an idea? Let’s make it happen.',
   description:
-    "Whether you're planning a website, a digital product, a mobile application, or a final-year project, tell us what you want to achieve and where you need support. Let's explore the right approach together.",
+    'Whether you need a bespoke website, mobile application, intuitive UI/UX interface system, bold graphic design, or custom business software, we are ready to bring your vision to life.',
   cta: { label: 'Start a Project', href: '/contact' },
-  stats: [
-    { icon: Clock, label: 'Clear scope and next steps' },
-    { icon: ShieldCheck, label: 'Collaborative communication' },
+  features: [
+    'Direct communication with studio leads',
+    'Transparent timelines and clear deliverables',
+    'Tailored proposals suited to your project scope',
   ],
 };
 
-/* ──────────────────────────────────────────────────────────
-   Studio Products & Labs
-   ────────────────────────────────────────────────────────── */
+/* Backwards-compatible exports for /about, /approach, and /products routes */
+export const aboutContent = {
+  eyebrow: aboutStudioContent.eyebrow,
+  heading: aboutStudioContent.heading,
+  lead: aboutStudioContent.description,
+  story: [
+    'We are a multidisciplinary team of designers, creative coders, and full-stack developers. We reject repetitive design patterns and generic corporate templates in favor of bespoke visual identities, striking typography, and lightning-fast web and mobile applications.',
+    'Whether designing a physical exhibition poster that demands notice from across the room, architecting a custom business management tool, or engineering a responsive web platform that converts visitors into dedicated advocates, we treat every project with total craftsmanship and zero compromise.',
+  ],
+  values: [
+    {
+      title: 'Artistic Intention',
+      description: 'We do not settle for cookie-cutter layouts. Every color, typographic pairing, and spacing ratio is chosen with deliberate purpose.',
+    },
+    {
+      title: 'Modern Engineering',
+      description: 'Clean, accessible, and high-performance codebases built with modern tools: React, Vite, and Tailwind CSS.',
+    },
+    {
+      title: 'Direct Collaboration',
+      description: 'You work directly with the creative leads and developers building your project. No layers of account managers.',
+    },
+    {
+      title: 'Obsessive Quality',
+      description: 'Pixel-perfect responsiveness, rigorous cross-browser testing, and flawless prepress and software production.',
+    },
+  ],
+};
+
+export const approachContent = {
+  eyebrow: processContent.eyebrow,
+  heading: processContent.heading,
+  description: processContent.description,
+  steps: processContent.steps.map((step) => ({
+    ...step,
+    details: [
+      `Key phase: ${step.tagline}`,
+      step.description,
+      'Close collaboration & milestone check-ins',
+      'Quality control & review',
+    ],
+  })),
+};
 
 export const productsContent = {
   eyebrow: 'Internal Labs',
@@ -394,7 +590,6 @@ export const productsContent = {
       name: 'GridMatrix',
       tagline: 'Kinetic Layout & Poster Prototyper',
       status: 'Active Lab',
-      icon: Cpu,
       description:
         'An experimental browser canvas for algorithmic poster composition, variable font distortion, and automated print prepress exports.',
     },
@@ -402,25 +597,15 @@ export const productsContent = {
       name: 'TokenSync',
       tagline: 'Figma to React Token Bridge',
       status: 'Coming Soon',
-      icon: Layers,
       description:
-        'Bi-directional sync engine that translates Figma color, spacing, and typography styles directly into Tailwind v4 and CSS custom properties.',
+        'Bi-directional sync engine that translates Figma color, spacing, and typography styles directly into Tailwind CSS and CSS custom properties.',
     },
     {
       name: 'LighthouseGuard',
       tagline: 'Continuous Performance Sentinel',
       status: 'Coming Soon',
-      icon: MonitorSmartphone,
       description:
         'Automated CI/CD test runner that audits responsive viewports and Core Web Vitals before staging branches merge into production.',
     },
   ],
-};
-
-/* ──────────────────────────────────────────────────────────
-   Brand Philosophy Credo
-   ────────────────────────────────────────────────────────── */
-
-export const brandPhilosophyContent = {
-  statement: 'We build technology that moves ideas forward.',
 };

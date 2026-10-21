@@ -261,11 +261,12 @@ export function ContactPage() {
                           onChange={handleChange}
                           className="h-12 px-4 rounded-xl bg-[#080A0F] border border-[#232B3E] focus:border-[var(--color-accent-soft)] focus:outline-none text-sm text-white transition-colors"
                         >
-                          <option value="Website Development">Website Development</option>
+                          <option value="Website Design & Development">Website Design &amp; Development</option>
+                          <option value="Mobile App Development">Mobile App Development</option>
+                          <option value="UI/UX Design">UI/UX Design</option>
                           <option value="Poster & Graphic Design">Poster &amp; Graphic Design</option>
-                          <option value="UI/UX & Product Design">UI/UX &amp; Product Design</option>
-                          <option value="Brand Strategy & Innovation">Brand Strategy &amp; Innovation</option>
-                          <option value="Full Creative Engagement">Full Creative Engagement</option>
+                          <option value="Custom Software Solutions">Custom Software Solutions</option>
+                          <option value="Full Studio Engagement">Full Studio Engagement</option>
                         </select>
                       </div>
                     </div>
