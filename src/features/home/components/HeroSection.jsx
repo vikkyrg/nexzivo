@@ -1,10 +1,10 @@
 import { motion } from 'motion/react';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { heroContent } from '../data/homeContent';
 import { useReducedMotionPreference } from '@/hooks/useReducedMotionPreference';
-import heroMockup from '@/assets/showcase/hero-showcase.jpg';
+import heroMockup from '@/assets/hero1.png';
 
 /**
  * HeroSection — Refined editorial hero with flexible layout.
@@ -18,7 +18,7 @@ export function HeroSection() {
   const reducedMotion = useReducedMotionPreference();
 
   // Coordinated entrance animation variants (respects reducedMotion)
-  const fadeUp = (delay = 0, yOffset = 18, duration = 0.6) => {
+  const fadeUp = (delay = 0, yOffset = 16, duration = 0.55) => {
     if (reducedMotion) {
       return {
         initial: { opacity: 1, y: 0 },
@@ -32,17 +32,18 @@ export function HeroSection() {
     };
   };
 
+  // Right illustration entrance: smooth fade-in with gentle scale-up from ~94% to 100%
   const showcaseVariant = () => {
     if (reducedMotion) {
       return {
-        initial: { opacity: 1, y: 0, scale: 1 },
-        animate: { opacity: 1, y: 0, scale: 1 },
+        initial: { opacity: 1, scale: 1 },
+        animate: { opacity: 1, scale: 1 },
       };
     }
     return {
-      initial: { opacity: 0, y: 22, scale: 0.96 },
-      animate: { opacity: 1, y: 0, scale: 1 },
-      transition: { duration: 0.75, delay: 0.3, ease: EASE_OUT_EXPO },
+      initial: { opacity: 0, scale: 0.94, y: 12 },
+      animate: { opacity: 1, scale: 1, y: 0 },
+      transition: { duration: 0.8, delay: 0.22, ease: EASE_OUT_EXPO },
     };
   };
 
@@ -63,75 +64,84 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative bg-[#F7F9FC] text-[#141B2A] pt-24 pb-14 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-24 border-b border-[#E3E8F0] overflow-hidden"
+      className="relative bg-[#F7F9FC] text-[#141B2A] pt-24 pb-14 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20 xl:pb-24 border-b border-[#E3E8F0] overflow-hidden"
     >
-      {/* Project-Related Subtle Background: Soft gradients and oversized brand-inspired geometric shapes */}
+      {/* Background Layer: Soft studio atmosphere, subtle geometric ribbons & faint dot grids */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        {/* Soft atmospheric gradient glows */}
+        {/* Soft atmospheric gradient wash behind the illustration */}
         <motion.div
           {...bgShapeVariant(0)}
-          className="absolute -top-40 right-[-5%] h-[560px] w-[560px] rounded-full bg-gradient-to-br from-[#2764F5]/8 via-[#35C5E8]/6 to-transparent blur-3xl"
+          className="absolute -top-32 right-[-5%] h-[620px] w-[620px] lg:h-[700px] lg:w-[700px] rounded-full bg-gradient-to-br from-[#2764F5]/7 via-[#35C5E8]/5 to-transparent blur-3xl"
         />
         <motion.div
           {...bgShapeVariant(0.1)}
-          className="absolute top-1/4 left-[-10%] h-[520px] w-[520px] rounded-full bg-gradient-to-tr from-[#35C5E8]/7 via-[#2764F5]/4 to-transparent blur-3xl"
-        />
-        <motion.div
-          {...bgShapeVariant(0.15)}
-          className="absolute -bottom-24 right-1/4 h-[380px] w-[380px] rounded-full bg-[#2764F5]/4 blur-3xl"
+          className="absolute top-1/4 left-[-10%] h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-[#35C5E8]/6 via-[#2764F5]/4 to-transparent blur-3xl"
         />
 
-        {/* Oversized Brand-Inspired Geometric Ribbon / Polygon (Top Right) */}
+        {/* Faint Studio Dotted Pattern behind the illustration (Right Side) */}
         <motion.svg
-          {...bgShapeVariant(0.1)}
-          className="absolute -top-16 -right-20 w-[420px] h-[420px] lg:w-[580px] lg:h-[580px] text-[#2764F5]/[0.035] transform rotate-12"
+          {...bgShapeVariant(0.18)}
+          className="absolute top-20 right-10 lg:right-20 w-64 h-64 text-[#2764F5]/[0.05] hidden sm:block"
+          viewBox="0 0 240 240"
+          fill="currentColor"
+        >
+          <pattern id="hero-dots-right" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+            <circle cx="3" cy="3" r="1.5" />
+          </pattern>
+          <rect width="240" height="240" fill="url(#hero-dots-right)" />
+        </motion.svg>
+
+        {/* Subtle Geometric Ribbon / Angle Polygon behind the studio setup */}
+        <motion.svg
+          {...bgShapeVariant(0.12)}
+          className="absolute -top-12 right-4 lg:right-16 w-[440px] h-[440px] lg:w-[560px] lg:h-[560px] text-[#2764F5]/[0.035] transform rotate-6"
           viewBox="0 0 500 500"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            d="M 120 40 L 420 40 L 360 440 L 60 440 Z"
+            d="M 140 40 L 440 40 L 370 450 L 70 450 Z"
             stroke="currentColor"
-            strokeWidth="32"
+            strokeWidth="28"
             strokeLinejoin="round"
           />
           <path
-            d="M 190 120 L 460 120 L 400 380 L 130 380 Z"
+            d="M 210 110 L 470 110 L 410 390 L 150 390 Z"
             stroke="currentColor"
-            strokeWidth="12"
-            strokeDasharray="16 16"
+            strokeWidth="10"
+            strokeDasharray="14 14"
           />
         </motion.svg>
 
         {/* Subtle Isometric Grid Dot Cluster (Top Left Edge) */}
         <motion.svg
           {...bgShapeVariant(0.15)}
-          className="absolute top-12 left-4 w-56 h-56 text-[#2764F5]/[0.045] hidden sm:block"
+          className="absolute top-12 left-4 w-52 h-52 text-[#2764F5]/[0.04] hidden sm:block"
           viewBox="0 0 200 200"
           fill="currentColor"
         >
-          <pattern id="hero-dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+          <pattern id="hero-dots-left" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
             <circle cx="3" cy="3" r="1.5" />
           </pattern>
-          <rect width="200" height="200" fill="url(#hero-dots)" />
+          <rect width="200" height="200" fill="url(#hero-dots-left)" />
         </motion.svg>
 
         {/* Oversized Subtle Curved Arc (Bottom Left Edge) */}
         <motion.svg
           {...bgShapeVariant(0.2)}
-          className="absolute -bottom-20 -left-20 w-[360px] h-[360px] text-[#35C5E8]/[0.05]"
+          className="absolute -bottom-20 -left-20 w-[340px] h-[340px] text-[#35C5E8]/[0.045]"
           viewBox="0 0 400 400"
           fill="none"
         >
-          <circle cx="100" cy="300" r="220" stroke="currentColor" strokeWidth="24" />
+          <circle cx="100" cy="300" r="220" stroke="currentColor" strokeWidth="22" />
           <circle cx="100" cy="300" r="160" stroke="currentColor" strokeWidth="2" strokeDasharray="8 8" />
         </motion.svg>
       </div>
 
-      <Container className="relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-center">
+      <Container className="relative z-10 max-w-[1440px] xl:max-w-[1540px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-4 xl:gap-8 items-center">
           {/* Left Column: Headline, Copy, CTAs, Capabilities */}
-          <div className="lg:col-span-6 xl:col-span-6 flex flex-col items-start gap-5 sm:gap-6 order-1 pr-0 lg:pr-4">
+          <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-start gap-5 sm:gap-6 order-1 pr-0 lg:pr-2">
             {/* Studio Eyebrow Badge */}
             <motion.div {...fadeUp(0.04, 12, 0.45)}>
               <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#E3E8F0] shadow-xs text-[11.5px] font-bold uppercase tracking-[0.2em] text-[#2764F5]">
@@ -140,13 +150,13 @@ export function HeroSection() {
               </span>
             </motion.div>
 
-            {/* Headline with 3 Staggered Animated Lines (each translates 16-18px up and fades in) */}
-            <h1 className="font-heading text-[2.2rem] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[clamp(2.5rem,3vw,3.35rem)] xl:text-[clamp(2.9rem,3.4vw,3.65rem)] font-extrabold tracking-tight leading-[1.12] text-[#141B2A] max-w-xl">
+            {/* Headline with 3 Staggered Animated Lines */}
+            <h1 className="font-heading text-[2.25rem] sm:text-[2.85rem] md:text-[3.3rem] lg:text-[clamp(2.45rem,2.9vw,3.35rem)] xl:text-[clamp(2.85rem,3.3vw,3.75rem)] font-extrabold tracking-tight leading-[1.12] text-[#141B2A] max-w-xl">
               {heroContent.lines.map((line, idx) => (
                 <motion.span
                   key={idx}
                   className="block whitespace-normal sm:whitespace-nowrap"
-                  {...fadeUp(0.1 + idx * 0.09, 18, 0.55)}
+                  {...fadeUp(0.1 + idx * 0.08, 16, 0.55)}
                 >
                   {line.highlight ? (
                     <span className="text-[#2764F5]">{line.text}</span>
@@ -157,18 +167,18 @@ export function HeroSection() {
               ))}
             </h1>
 
-            {/* Supporting Description with gentle fade-up */}
+            {/* Supporting Description */}
             <motion.p
-              className="max-w-lg text-[15px] sm:text-[16.5px] lg:text-[17px] xl:text-[18px] text-[#687386] leading-relaxed"
-              {...fadeUp(0.38, 16, 0.55)}
+              className="max-w-lg text-[15px] sm:text-[16.5px] lg:text-[17px] text-[#687386] leading-relaxed"
+              {...fadeUp(0.36, 14, 0.5)}
             >
               {heroContent.description}
             </motion.p>
 
-            {/* CTA Buttons: Smooth fade-up in natural flow */}
+            {/* CTA Buttons */}
             <motion.div
               className="flex flex-wrap items-center gap-3.5 sm:gap-4 pt-1"
-              {...fadeUp(0.48, 16, 0.55)}
+              {...fadeUp(0.44, 14, 0.5)}
             >
               <Button
                 to={heroContent.primaryCta.href}
@@ -190,10 +200,10 @@ export function HeroSection() {
               </Button>
             </motion.div>
 
-            {/* Studio Capabilities Indicator: Staggered entrance */}
+            {/* Studio Capabilities Indicator */}
             <motion.div
-              className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-5 sm:pt-6 mt-1 border-t border-[#E3E8F0] w-full text-[12.5px] sm:text-[13px] font-semibold text-[#141B2A]"
-              {...fadeUp(0.58, 12, 0.55)}
+              className="flex flex-wrap items-center gap-x-3.5 gap-y-2 pt-5 sm:pt-6 mt-1 border-t border-[#E3E8F0] w-full text-[12.5px] sm:text-[13px] font-semibold text-[#141B2A]"
+              {...fadeUp(0.52, 10, 0.5)}
             >
               <span className="text-[11.5px] sm:text-xs font-bold uppercase tracking-wider text-[#2764F5]">
                 Studio Focus:
@@ -210,38 +220,20 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Right Column: Hero Visual Showcase (gentle 22px translate up and scale from 0.96 -> 1.0) */}
-          <div className="lg:col-span-6 xl:col-span-6 w-full order-2">
+          {/* Right Column: Hero Visual Showcase (Significantly Enlarged Width & Height) */}
+          <div className="lg:col-span-7 xl:col-span-7 w-full order-2 flex items-center justify-center lg:justify-end">
             <motion.div
-              className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden border border-[#DCE4F0] bg-white shadow-[0_22px_55px_-12px_rgba(16,27,45,0.13)] transition-shadow duration-300 hover:shadow-[0_28px_65px_-12px_rgba(16,27,45,0.19)]"
+              className="relative w-full max-w-[680px] lg:max-w-none flex items-center justify-center lg:justify-end lg:scale-[1.08] xl:scale-[1.14] 2xl:scale-[1.18] origin-center lg:origin-right"
               {...showcaseVariant()}
             >
-              {/* Showcase Framing: slightly taller 16:9.8 ratio so both height and width expand proportionally */}
-              <div className="relative aspect-[16/10] sm:aspect-[16/9.6] lg:aspect-[16/9.8] w-full overflow-hidden bg-[#101B2D]">
-                <img
-                  src={heroMockup}
-                  alt="NEXZIVO Creative Studio Showcase — Website design, typography exhibition poster, and mobile app UI dashboard"
-                  className="h-full w-full object-cover object-center transform transition-transform duration-700 ease-out hover:scale-[1.02]"
-                  loading="eager"
-                />
-              </div>
-
-              {/* Minimalist, Integrated Showcase Caption Bar */}
-              <div className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-3.5 bg-white border-t border-[#EAEFF6]">
-                <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-                  <span className="flex h-2 w-2 shrink-0 rounded-full bg-[#2764F5]" />
-                  <span className="text-xs sm:text-[13px] font-bold text-[#141B2A] tracking-tight">
-                    NEXZIVO Studio Showcase
-                  </span>
-                  <span className="text-[11.5px] sm:text-xs text-[#687386] hidden sm:inline text-nowrap">
-                    · Web, Poster &amp; Mobile Interfaces
-                  </span>
-                </div>
-                <div className="flex items-center gap-1 text-xs sm:text-[13px] font-semibold text-[#2764F5] shrink-0 ml-2">
-                  <span className="hidden sm:inline">Crafted with intention</span>
-                  <ArrowUpRight size={14} />
-                </div>
-              </div>
+              {/* Preserves complete illustration, transparent background, natural subtle shadow */}
+              <img
+                src={heroMockup}
+                alt="NEXZIVO Studio Showcase — Website design, mobile app interface, and creative studio workspace"
+                className="w-full h-auto max-h-[500px] sm:max-h-[580px] md:max-h-[640px] lg:max-h-[700px] xl:max-h-[780px] 2xl:max-h-[860px] object-contain drop-shadow-[0_20px_45px_rgba(16,27,45,0.08)]"
+                loading="eager"
+                decoding="async"
+              />
             </motion.div>
           </div>
         </div>

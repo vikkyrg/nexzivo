@@ -2,8 +2,10 @@ import { Helmet } from 'react-helmet-async';
 import { siteConfig } from '@/config/site';
 import {
   HeroSection,
+  WhatWeDoSection,
   ServicesSection,
   AboutStudioSection,
+  VisionMissionSection,
   ApproachSection,
   ContactCTASection,
 } from './components';
@@ -38,14 +40,20 @@ export function HomePage() {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Services Section (All 5 Studio Services) */}
+      {/* Services Section (Visual Showcase of Studio Work & Deliverables) */}
       <ServicesSection />
 
       {/* About the Studio Section */}
       <AboutStudioSection />
 
+      {/* Our Vision & Our Mission Automatic Carousel Section */}
+      <VisionMissionSection />
+
       {/* Our 4-Step Process Section */}
       <ApproachSection />
+
+      {/* "What We Do" - 6 Core Services Interactive Carousel */}
+      <WhatWeDoSection />
 
       {/* Deep-Navy Contact CTA Section */}
       <ContactCTASection />

@@ -609,3 +609,147 @@ export const productsContent = {
     },
   ],
 };
+
+/* ──────────────────────────────────────────────────────────
+   Vision & Mission Section Content
+   Exact copy, metrics, and roadmap labels as specified.
+   ────────────────────────────────────────────────────────── */
+
+export const visionMissionContent = {
+  vision: {
+    id: 'vision',
+    badge: 'LONG-TERM VISION',
+    heading: 'Our Vision',
+    subtitle: 'Leading the future of human-centered technology and purposeful creative design.',
+    mainStatement: 'Shaping a Smarter, More Accessible Digital World.',
+    supportingParagraph:
+      'We envision a future where digital technology bridges human aspiration with effortless execution. By merging intuitive design systems with high-performance code, we enable businesses, professionals, and students to build what is next with confidence.',
+    principles: [
+      {
+        id: 'v1',
+        title: 'Accessible Innovation Everywhere',
+        description:
+          'Democratizing high-caliber design and modern software engineering for startups, enterprises, and learners alike.',
+        iconKey: 'globe',
+      },
+      {
+        id: 'v2',
+        title: 'Clean, Sustainable Engineering',
+        description:
+          'Crafting maintainable, accessible codebases and human-first user experiences that stand the test of time.',
+        iconKey: 'code',
+      },
+      {
+        id: 'v3',
+        title: 'Inspiring Technical Confidence',
+        description:
+          'Fostering deep technical understanding and creative problem-solving across every project we touch.',
+        iconKey: 'sparkles',
+      },
+    ],
+  },
+  mission: {
+    id: 'mission',
+    badge: 'OUR CORE MISSION',
+    heading: 'Our Mission',
+    subtitle: 'Empowering digital innovation with clear direction and measurable outcomes.',
+    mainStatement: 'To Build Technology That Moves Ideas Forward.',
+    supportingParagraph:
+      'We aim to transform ideas into practical solutions through thoughtful design, reliable development, and a clear understanding of the problems we are solving. From business platforms to final-year academic projects, we create outcomes that serve real purpose.',
+    principles: [
+      {
+        id: 'm1',
+        title: '40% Faster Digital Adoption',
+        description:
+          'We strive to help businesses and students achieve rapid, seamless adoption of modern digital technologies.',
+        iconKey: 'zap',
+      },
+      {
+        id: 'm2',
+        title: 'Secure, Scalable, AI-Driven Solutions',
+        description:
+          'Our solutions are designed to be secure, scalable, and powered by AI for future-ready performance.',
+        iconKey: 'shield',
+      },
+      {
+        id: 'm3',
+        title: 'Measurable Business Impact',
+        description:
+          'We focus on delivering solutions that result in tangible, measurable improvements for our clients.',
+        iconKey: 'target',
+      },
+    ],
+  },
+};
+
+/* ──────────────────────────────────────────────────────────
+   "What We Do" Section Content (6 Core Services Carousel)
+   1. Website Development
+   2. UI/UX Design
+   3. Poster & Graphic Design
+   4. Final-Year Projects
+   5. Mobile App Development
+   6. Custom Software Development
+   ────────────────────────────────────────────────────────── */
+
+export const whatWeDoContent = {
+  eyebrow: 'OUR SERVICES',
+  heading: 'What We Do',
+  subtitle: 'Delivering smart tech solutions to modern challenges.',
+  services: [
+    {
+      id: 'website-development',
+      title: 'Website Development',
+      description:
+        'Modern, responsive websites built to represent your brand, engage your audience, and support your goals.',
+      iconKey: 'code',
+      link: '/services/website-development',
+      tag: 'Web & Digital',
+    },
+    {
+      id: 'ui-ux-design',
+      title: 'UI/UX Design',
+      description:
+        'Intuitive interfaces and thoughtful user experiences designed around real people.',
+      iconKey: 'layout',
+      link: '/services/ui-ux-design',
+      tag: 'User Experience',
+    },
+    {
+      id: 'poster-graphic-design',
+      title: 'Poster & Graphic Design',
+      description:
+        'Creative posters, promotional graphics, and visual identities that help your brand communicate with impact.',
+      iconKey: 'palette',
+      link: '/services/poster-graphic-design',
+      tag: 'Visual & Brand',
+    },
+    {
+      id: 'final-year-projects',
+      title: 'Final-Year Projects',
+      description:
+        'Structured project development support that helps students turn academic ideas into working solutions.',
+      iconKey: 'graduation',
+      link: '/contact',
+      tag: 'Academic & Mentorship',
+    },
+    {
+      id: 'mobile-app-development',
+      title: 'Mobile App Development',
+      description:
+        'Practical mobile applications built around user needs and real-world problems.',
+      iconKey: 'smartphone',
+      link: '/services/mobile-app-development',
+      tag: 'iOS & Android',
+    },
+    {
+      id: 'custom-software-development',
+      title: 'Custom Software Development',
+      description:
+        'Tailored business software designed to simplify workflows, improve productivity, and solve specific operational challenges.',
+      iconKey: 'terminal',
+      link: '/services/brand-strategy-innovation',
+      tag: 'Enterprise & SaaS',
+    },
+  ],
+};

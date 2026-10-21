@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { ArrowRight, Cpu, Layers } from 'lucide-react';
+import { ArrowRight, Cpu } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { SectionReveal } from '@/components/ui/SectionReveal';
