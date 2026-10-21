@@ -23,11 +23,11 @@ const previewImages = {
 
 const EASE_OUT_EXPO = [0.22, 1, 0.36, 1];
 
-// Viewport trigger settings for scroll-based animations (runs once on scroll)
+// Viewport trigger settings for scroll-based animations (triggers smoothly slightly ahead)
 const scrollViewportConfig = {
   once: true,
-  amount: 0.15,
-  margin: '0px 0px -60px 0px',
+  amount: 0.05,
+  margin: '0px 0px 80px 0px',
 };
 
 /**
@@ -62,43 +62,53 @@ export function ServicesSection() {
 
   // Card cascading entrance variants
   const cardVariants = {
-    hidden: { opacity: 0, y: 28 },
+    hidden: { opacity: 0, y: 24 },
     visible: (custom) => ({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.7,
-        delay: custom * 0.12, // 120ms stagger between cards
+        duration: 0.6,
+        delay: custom * 0.08,
         ease: EASE_OUT_EXPO,
       },
     }),
   };
 
-  // Signature image vertical mask reveal
-  const imageMaskVariants = {
-    hidden: {
-      clipPath: 'polygon(0 0, 100% 0, 100% 0%, 0 0%)',
-      scale: 1.03,
-    },
+  // Silky-smooth GPU-accelerated curtain release reveal (avoids expensive clipPath re-rasterization on scroll)
+  const imageCurtainVariants = {
+    hidden: { scaleY: 1 },
     visible: (custom) => ({
-      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-      scale: 1,
+      scaleY: 0,
       transition: {
-        duration: 0.8,
-        delay: custom * 0.12 + 0.1,
+        duration: 0.7,
+        delay: custom * 0.08 + 0.12,
         ease: EASE_OUT_EXPO,
       },
     }),
   };
 
-  // Badges fade-in after mask reveal
-  const badgeVariants = {
-    hidden: { opacity: 0 },
+  const imageScaleVariants = {
+    hidden: { scale: 1.08, opacity: 0.8 },
     visible: (custom) => ({
+      scale: 1,
       opacity: 1,
       transition: {
-        duration: 0.45,
-        delay: custom * 0.12 + 0.35,
+        duration: 0.8,
+        delay: custom * 0.08 + 0.1,
+        ease: EASE_OUT_EXPO,
+      },
+    }),
+  };
+
+  // Badges fade-in smoothly after release
+  const badgeVariants = {
+    hidden: { opacity: 0, y: -4 },
+    visible: (custom) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
+        delay: custom * 0.08 + 0.3,
         ease: EASE_OUT_EXPO,
       },
     }),
@@ -202,7 +212,7 @@ export function ServicesSection() {
                     className="flex flex-col flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2764F5] rounded-2xl"
                     aria-label={`Learn more about ${service.title}`}
                   >
-                    {/* Visual Real Preview with signature vertical mask reveal */}
+                    {/* Visual Real Preview with smooth GPU-accelerated reveal curtain */}
                     <div
                       className={`relative w-full overflow-hidden bg-[#101B2D] ${
                         idx >= 3 ? 'aspect-[16/9]' : 'aspect-[16/10]'
@@ -210,22 +220,33 @@ export function ServicesSection() {
                     >
                       <motion.div
                         custom={idx}
-                        variants={reducedMotion ? undefined : imageMaskVariants}
-                        className="h-full w-full"
+                        variants={reducedMotion ? undefined : imageScaleVariants}
+                        className="h-full w-full will-change-transform"
                       >
                         <img
                           src={previewImg}
                           alt={`${service.title} preview showcase`}
-                          className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-102"
-                          loading="lazy"
+                          decoding="async"
+                          loading={idx < 2 ? 'eager' : 'lazy'}
+                          className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-103"
                         />
                       </motion.div>
+
+                      {/* Smooth curtain reveal overlay */}
+                      {!reducedMotion && (
+                        <motion.div
+                          custom={idx}
+                          variants={imageCurtainVariants}
+                          style={{ originY: 0 }}
+                          className="absolute inset-0 bg-[#101B2D] pointer-events-none will-change-transform z-1"
+                        />
+                      )}
 
                       {/* Category Badge overlay */}
                       <motion.div
                         custom={idx}
                         variants={reducedMotion ? undefined : badgeVariants}
-                        className="absolute top-4 left-4"
+                        className="absolute top-4 left-4 z-2"
                       >
                         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-xs text-[11px] font-bold uppercase tracking-wider text-[#101B2D] shadow-xs">
                           <span className="h-1.5 w-1.5 rounded-full bg-[#2764F5]" />
@@ -237,7 +258,7 @@ export function ServicesSection() {
                       <motion.div
                         custom={idx}
                         variants={reducedMotion ? undefined : badgeVariants}
-                        className="absolute top-4 right-4"
+                        className="absolute top-4 right-4 z-2"
                       >
                         <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-[#101B2D]/85 backdrop-blur-xs text-xs font-mono font-bold text-white">
                           {service.number}
